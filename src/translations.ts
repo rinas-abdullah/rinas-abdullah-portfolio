@@ -113,6 +113,17 @@ export const translations = {
           tech: ["Python (TensorFlow, Scikit-learn)", "React.js", "Node.js", "Firebase", "PostgreSQL", "Bluetooth Low Energy"],
           impact: "Enables early detection of neuro-motor decline 2-4 weeks before traditional clinical reviews, with clinical validation studies underway with leading healthcare institutions.",
           link: "https://project-files-sable.vercel.app"
+        },
+        {
+          id: "lavieahd",
+          title: "La.Via.Ahd",
+          tag: "Jewelry E-Commerce Experience",
+          description: "An elegant, Arabic-first jewelry storefront with a camera-based virtual try-on feature, letting shoppers preview rings before buying.",
+          problem: "Shopping for jewelry online makes it hard for customers to judge fit and look before purchasing, driving hesitation and returns.",
+          solution: "Designed and developed a premium, RTL-first storefront with a live product catalog, wishlist, curated gift picks, and a camera-based virtual try-on experience.",
+          tech: ["Next.js", "React.js"],
+          impact: "A polished, mobile-first shopping experience that brings a try-before-you-buy moment to online jewelry shopping.",
+          link: "https://la-vie-ahd.vercel.app/"
         }
       ]
     },
@@ -244,7 +255,8 @@ export const translations = {
         "PROJECTS DIRECTORY:",
         "  * CyberMind: Adaptive learning platform simulating AI-driven threats",
         "  * Mu'een: AI vision platform for crowd density analytics and crowd safety",
-        "  * Dithar: Smart insole platform for post-discharge patient monitoring"
+        "  * Dithar: Smart insole platform for post-discharge patient monitoring",
+        "  * La.Via.Ahd: Jewelry e-commerce storefront with AR virtual try-on"
       ],
       contactResult: [
         "CONTACT INFRASTRUCTURE:",
@@ -319,6 +331,15 @@ export const translations = {
         warningStatus: "Elevated Readings - Monitor Closely",
         dangerStatus: "HIGH RISK - CLINICAL ALERT TRIGGERED",
         vitalSigns: "Telemetry feed:"
+      },
+      lavieahd: {
+        title: "La.Via.Ahd: Wishlist & Stock Preview",
+        desc: "Tap a piece to save it to the wishlist and see live stock badges.",
+        wishlistLabel: "Wishlist",
+        newBadge: "New",
+        outOfStockBadge: "Out of Stock",
+        saveLabel: "Save",
+        savedLabel: "Saved"
       }
     }
   },
@@ -436,6 +457,17 @@ export const translations = {
           tech: ["Python (TensorFlow, Scikit-learn)", "React.js", "Node.js", "Firebase", "PostgreSQL", "Bluetooth Low Energy"],
           impact: "يتيح كشف التدهور الحركي العصبي مبكراً بفارق 2-4 أسابيع عن المراجعات السريرية التقليدية، مع دراسات تحقق سريري جارية مع مؤسسات صحية رائدة.",
           link: "https://project-files-sable.vercel.app"
+        },
+        {
+          id: "lavieahd",
+          title: "La.Via.Ahd",
+          tag: "تجربة تسوق مجوهرات إلكترونية",
+          description: "متجر مجوهرات أنيق بواجهة عربية أصيلة، مع ميزة تجربة افتراضية بالكاميرا تتيح للعميلة معاينة الخاتم قبل الشراء.",
+          problem: "التسوق الإلكتروني للمجوهرات يصعّب على العميلة تقييم المقاس والمظهر قبل الشراء، مما يزيد التردد ونسبة الإرجاع.",
+          solution: "صممت وطورت متجراً إلكترونياً فاخراً بواجهة عربية RTL كاملة، يشمل كتالوج منتجات حي، قائمة مفضلة، اختيارات هدايا مُنسّقة، وتجربة افتراضية بالكاميرا لمعاينة القطع قبل الشراء.",
+          tech: ["Next.js", "React.js"],
+          impact: "تجربة تسوق أنيقة ومتجاوبة تقرّب لحظة \"التجربة قبل الشراء\" من تسوق المجوهرات عبر الإنترنت.",
+          link: "https://la-vie-ahd.vercel.app/"
         }
       ]
     },
@@ -565,7 +597,8 @@ export const translations = {
         "دليل المشاريع النشطة:",
         "  * CyberMind: منصة تعلم تكيفية بالذكاء الاصطناعي لمحاكاة التهديدات",
         "  * معين: استخدام الرؤية الحاسوبية والذكاء الاصطناعي لإدارة الحشود بمواسم الحج",
-        "  * دثار: منصة لباد ذكي لمتابعة المرضى بعد الخروج من المستشفى"
+        "  * دثار: منصة لباد ذكي لمتابعة المرضى بعد الخروج من المستشفى",
+        "  * La.Via.Ahd: متجر مجوهرات إلكتروني بتجربة افتراضية بالكاميرا"
       ],
       contactResult: [
         "قنوات الاتصال الآمنة:",
@@ -640,6 +673,15 @@ export const translations = {
         warningStatus: "قراءات مرتفعة - يتطلب متابعة دقيقة",
         dangerStatus: "خطر مرتفع - تم إطلاق تنبيه سريري",
         vitalSigns: "تدفق بيانات التتبع:"
+      },
+      lavieahd: {
+        title: "La.Via.Ahd: معاينة المفضلة والمخزون",
+        desc: "اضغطي على القطعة لحفظها في المفضلة وشاهدي شارات المخزون تتحدث لحظيًا.",
+        wishlistLabel: "المفضلة",
+        newBadge: "جديد",
+        outOfStockBadge: "نفذ من المخزون",
+        saveLabel: "حفظ",
+        savedLabel: "محفوظ"
       }
     }
   }

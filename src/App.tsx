@@ -31,6 +31,7 @@ import {
   ArrowUpRight,
   Footprints,
   Thermometer,
+  Gem,
 } from 'lucide-react';
 import { translations } from './translations';
 
@@ -618,6 +619,73 @@ const DitharSimulator = () => {
   );
 };
 
+const LAVIE_PRODUCTS = [
+  { id: 1, name: { en: 'Royal Blue Zircon Ring', ar: 'خاتم زيركون أزرق ملكي' }, price: 152, badge: 'new' },
+  { id: 2, name: { en: 'Royal Yellow Zircon Ring', ar: 'خاتم زيركون أصفر ملكي' }, price: 156, badge: 'soldout' },
+  { id: 3, name: { en: 'Elegant Solitaire Ring', ar: 'خاتم سوليتير الأنيق' }, price: 129, badge: 'new' },
+] as const;
+
+const LaVieSimulator = () => {
+  const { lang, t } = useLang();
+  const [wishlist, setWishlist] = useState<number[]>([]);
+
+  const toggleWishlist = (id: number) => {
+    setWishlist(prev => prev.includes(id) ? prev.filter(w => w !== id) : [...prev, id]);
+  };
+
+  return (
+    <div className="glow-card-container bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+      <div className="glow-card-border" />
+      <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-xl bg-rose-50 text-rose-600"><Gem size={18} /></div>
+          <div>
+            <h4 className="text-sm font-bold text-slate-900">{t.simulators.lavieahd.title}</h4>
+            <p className="text-[11px] text-slate-500">{t.simulators.lavieahd.desc}</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-rose-50 border border-rose-100 shrink-0">
+          <Heart size={12} className="text-rose-500" fill={wishlist.length > 0 ? 'currentColor' : 'none'} />
+          <span className="text-[11px] font-bold text-rose-700">{t.simulators.lavieahd.wishlistLabel} ({wishlist.length})</span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-3">
+        {LAVIE_PRODUCTS.map((product) => {
+          const saved = wishlist.includes(product.id);
+          const soldOut = product.badge === 'soldout';
+          return (
+            <div key={product.id} className="rounded-xl border border-slate-200 bg-slate-50 p-3 flex flex-col gap-2">
+              <div className="flex items-start justify-between">
+                <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-wide ${soldOut ? 'bg-slate-200 text-slate-500' : 'bg-emerald-100 text-emerald-700'}`}>
+                  {soldOut ? t.simulators.lavieahd.outOfStockBadge : t.simulators.lavieahd.newBadge}
+                </span>
+                <button
+                  onClick={() => toggleWishlist(product.id)}
+                  aria-label={t.simulators.lavieahd.saveLabel}
+                  className="cursor-pointer"
+                >
+                  <Heart size={14} className={saved ? 'text-rose-500' : 'text-slate-300'} fill={saved ? 'currentColor' : 'none'} />
+                </button>
+              </div>
+              <div className="w-full aspect-square rounded-lg bg-gradient-to-br from-rose-100 to-amber-50 flex items-center justify-center">
+                <Gem size={22} className="text-rose-300" />
+              </div>
+              <div className="text-[10px] font-semibold text-slate-800 leading-snug">{product.name[lang]}</div>
+              <div className="text-[11px] font-black text-slate-900">
+                {product.price} {lang === 'en' ? 'SAR' : 'ر.س'}
+              </div>
+              <div className="text-[9px] font-semibold text-rose-500">
+                {saved ? t.simulators.lavieahd.savedLabel : ''}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
 // --- Section Header ---
 
 const SectionHeader = ({ number, title, subtitle }: { number: string; title: string; subtitle?: string }) => {
@@ -909,7 +977,7 @@ const Projects = () => {
                         <ExternalLink size={11} />
                       </a>
                     )}
-                    <Tag color={project.id === 'cybermind' ? 'indigo' : project.id === 'mueen' ? 'violet' : 'emerald'}>
+                    <Tag color={project.id === 'cybermind' ? 'indigo' : project.id === 'mueen' ? 'violet' : project.id === 'lavieahd' ? 'rose' : 'emerald'}>
                       {lang === 'en' ? 'Case Study' : 'دراسة حالة'}
                     </Tag>
                   </div>
@@ -958,6 +1026,7 @@ const Projects = () => {
                 {project.id === 'cybermind' && <CyberMindSimulator />}
                 {project.id === 'mueen' && <MueenSimulator />}
                 {project.id === 'dithar' && <DitharSimulator />}
+                {project.id === 'lavieahd' && <LaVieSimulator />}
               </div>
             </div>
           ))}
