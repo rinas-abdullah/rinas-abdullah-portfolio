@@ -29,15 +29,19 @@ import {
   Play,
   CheckCircle2,
   ArrowUpRight,
+  Footprints,
+  Thermometer,
+  Gem,
 } from 'lucide-react';
 import { translations } from './translations';
 
 // --- Context & Hooks ---
 type Language = 'en' | 'ar';
+type Translations = typeof translations['en'];
 interface LanguageContextType {
   lang: Language;
   setLang: (lang: Language) => void;
-  t: any;
+  t: Translations;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -161,6 +165,7 @@ const Navbar = () => {
     { name: t.nav.skills, href: '#skills' },
     { name: t.nav.projects, href: '#projects' },
     { name: t.nav.experience, href: '#experience' },
+    { name: t.nav.volunteer, href: '#volunteer' },
     { name: t.nav.certs, href: '#certifications' },
     { name: t.nav.contact, href: '#contact' },
   ];
@@ -209,7 +214,11 @@ const Navbar = () => {
             <Globe size={10} className="text-slate-500" />
             <span>{lang === 'en' ? 'AR' : 'EN'}</span>
           </button>
-          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-slate-900 hover:text-indigo-600 transition-colors p-1">
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? (lang === 'en' ? 'Close menu' : 'إغلاق القائمة') : (lang === 'en' ? 'Open menu' : 'فتح القائمة')}
+            className="text-slate-900 hover:text-indigo-600 transition-colors p-1"
+          >
             {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
@@ -431,23 +440,28 @@ const CyberMindSimulator = () => {
   );
 };
 
+const MUEEN_SECTORS = [
+  { id: 1, name: { en: 'Muzdalifah Bridge', ar: 'جسر مزدلفة' }, initialCount: 20 },
+  { id: 2, name: { en: 'Arafat Gate 3', ar: 'بوابة عرفات ٣' }, initialCount: 45 },
+  { id: 3, name: { en: 'Mina Corridor C', ar: 'ممر منى ج' }, initialCount: 15 },
+  { id: 4, name: { en: 'Jamarat Tunnel 2', ar: 'نفق الجمرات ٢' }, initialCount: 85 },
+  { id: 5, name: { en: 'Al-Haram Piazza', ar: 'ساحة الحرم' }, initialCount: 60 },
+  { id: 6, name: { en: 'Station 4 Plaza', ar: 'ساحة المحطة ٤' }, initialCount: 30 },
+] as const;
+
 const MueenSimulator = () => {
   const { lang, t } = useLang();
-  const [sectors, setSectors] = useState([
-    { id: 1, name: lang === 'en' ? 'Muzdalifah Bridge' : 'جسر مزدلفة', count: 20 },
-    { id: 2, name: lang === 'en' ? 'Arafat Gate 3' : 'بوابة عرفات ٣', count: 45 },
-    { id: 3, name: lang === 'en' ? 'Mina Corridor C' : 'ممر منى ج', count: 15 },
-    { id: 4, name: lang === 'en' ? 'Jamarat Tunnel 2' : 'نفق الجمرات ٢', count: 85 },
-    { id: 5, name: lang === 'en' ? 'Al-Haram Piazza' : 'ساحة الحرم', count: 60 },
-    { id: 6, name: lang === 'en' ? 'Station 4 Plaza' : 'ساحة المحطة ٤', count: 30 }
-  ]);
+  const [counts, setCounts] = useState<Record<number, number>>(
+    () => Object.fromEntries(MUEEN_SECTORS.map(s => [s.id, s.initialCount]))
+  );
+  const sectors = MUEEN_SECTORS.map(s => ({ id: s.id, name: s.name[lang], count: counts[s.id] }));
 
   const handleSectorClick = (id: number) => {
-    setSectors(prev => prev.map(sec => {
-      if (sec.id !== id) return sec;
-      const next = sec.count === 20 ? 55 : sec.count === 55 ? 95 : 15;
-      return { ...sec, count: next };
-    }));
+    setCounts(prev => {
+      const current = prev[id];
+      const next = current === 20 ? 55 : current === 55 ? 95 : 15;
+      return { ...prev, [id]: next };
+    });
   };
 
   const avg = Math.round(sectors.reduce((a, c) => a + c.count, 0) / sectors.length);
@@ -528,21 +542,21 @@ const MueenSimulator = () => {
 
 const DitharSimulator = () => {
   const { lang, t } = useLang();
-  const [ambientTemp, setAmbientTemp] = useState(37.5);
-  const [heartRate, setHeartRate] = useState(82);
+  const [plantarTemp, setPlantarTemp] = useState(33.0);
+  const [pressureLoad, setPressureLoad] = useState(60);
 
   useEffect(() => {
-    setHeartRate(Math.round(75 + (ambientTemp - 36) * 11 + Math.random() * 5));
-  }, [ambientTemp]);
+    setPressureLoad(Math.round(60 + (plantarTemp - 30) * 14 + Math.random() * 8));
+  }, [plantarTemp]);
 
-  const isEmergency = ambientTemp >= 39.5 || heartRate >= 120;
-  const isWarning = !isEmergency && (ambientTemp >= 38.2 || heartRate >= 100);
+  const isEmergency = plantarTemp >= 37.5 || pressureLoad >= 190;
+  const isWarning = !isEmergency && (plantarTemp >= 35.0 || pressureLoad >= 140);
 
   return (
     <div className="glow-card-container bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
       <div className="glow-card-border" />
       <div className="flex items-center gap-3 mb-5">
-        <div className="p-2 rounded-xl bg-emerald-50 text-emerald-600"><Layers size={18} /></div>
+        <div className="p-2 rounded-xl bg-emerald-50 text-emerald-600"><Footprints size={18} /></div>
         <div>
           <h4 className="text-sm font-bold text-slate-900">{t.simulators.dithar.title}</h4>
           <p className="text-[11px] text-slate-500">{t.simulators.dithar.desc}</p>
@@ -566,11 +580,11 @@ const DitharSimulator = () => {
           <div className="space-y-1.5">
             <div className="flex justify-between text-[10px] font-semibold uppercase tracking-wider text-slate-500">
               <span>{t.simulators.dithar.tempLabel}</span>
-              <span className="text-slate-900 font-black">{ambientTemp.toFixed(1)}°C</span>
+              <span className="text-slate-900 font-black">{plantarTemp.toFixed(1)}°C</span>
             </div>
             <input
-              type="range" min="36.0" max="42.5" step="0.1" value={ambientTemp}
-              onChange={(e) => setAmbientTemp(parseFloat(e.target.value))}
+              type="range" min="30.0" max="40.0" step="0.1" value={plantarTemp}
+              onChange={(e) => setPlantarTemp(parseFloat(e.target.value))}
               className="w-full accent-indigo-600 h-1.5 bg-slate-200 rounded-full appearance-none cursor-pointer"
             />
           </div>
@@ -579,27 +593,94 @@ const DitharSimulator = () => {
             <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
               <div>
                 <span className="text-[9px] font-semibold text-slate-400 uppercase block">{t.simulators.dithar.heartLabel}</span>
-                <span className="text-lg font-black text-slate-900 block mt-0.5">{heartRate} <span className="text-xs font-semibold text-slate-400">BPM</span></span>
+                <span className="text-lg font-black text-slate-900 block mt-0.5">{pressureLoad} <span className="text-xs font-semibold text-slate-400">kPa</span></span>
               </div>
               <motion.div
-                animate={{ scale: [1, 1.25, 1] }}
-                transition={{ repeat: Infinity, duration: heartRate > 120 ? 0.35 : heartRate > 100 ? 0.55 : 0.85, ease: "easeInOut" }}
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ repeat: Infinity, duration: isEmergency ? 0.4 : isWarning ? 0.6 : 0.9, ease: "easeInOut" }}
                 className={`w-8 h-8 rounded-full flex items-center justify-center ${isEmergency ? 'bg-red-100 text-red-500' : isWarning ? 'bg-amber-100 text-amber-500' : 'bg-emerald-100 text-emerald-500'}`}
               >
-                <Heart size={15} fill="currentColor" />
+                <Activity size={15} />
               </motion.div>
             </div>
             <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
               <div>
                 <span className="text-[9px] font-semibold text-slate-400 uppercase block">{lang === 'en' ? 'Temp' : 'الحرارة'}</span>
-                <span className="text-lg font-black text-slate-900 block mt-0.5">{ambientTemp.toFixed(1)}<span className="text-xs font-semibold text-slate-400">°C</span></span>
+                <span className="text-lg font-black text-slate-900 block mt-0.5">{plantarTemp.toFixed(1)}<span className="text-xs font-semibold text-slate-400">°C</span></span>
               </div>
               <div className={`w-8 h-8 rounded-full flex items-center justify-center ${isEmergency ? 'bg-red-100 text-red-500' : isWarning ? 'bg-amber-100 text-amber-500' : 'bg-indigo-100 text-indigo-500'}`}>
-                <Activity size={15} className={isEmergency ? 'animate-pulse' : ''} />
+                <Thermometer size={15} className={isEmergency ? 'animate-pulse' : ''} />
               </div>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  );
+};
+
+const LAVIE_PRODUCTS = [
+  { id: 1, name: { en: 'Royal Blue Zircon Ring', ar: 'خاتم زيركون أزرق ملكي' }, price: 152, badge: 'new' },
+  { id: 2, name: { en: 'Royal Yellow Zircon Ring', ar: 'خاتم زيركون أصفر ملكي' }, price: 156, badge: 'soldout' },
+  { id: 3, name: { en: 'Elegant Solitaire Ring', ar: 'خاتم سوليتير الأنيق' }, price: 129, badge: 'new' },
+] as const;
+
+const LaVieSimulator = () => {
+  const { lang, t } = useLang();
+  const [wishlist, setWishlist] = useState<number[]>([]);
+
+  const toggleWishlist = (id: number) => {
+    setWishlist(prev => prev.includes(id) ? prev.filter(w => w !== id) : [...prev, id]);
+  };
+
+  return (
+    <div className="glow-card-container bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+      <div className="glow-card-border" />
+      <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-xl bg-rose-50 text-rose-600"><Gem size={18} /></div>
+          <div>
+            <h4 className="text-sm font-bold text-slate-900">{t.simulators.lavieahd.title}</h4>
+            <p className="text-[11px] text-slate-500">{t.simulators.lavieahd.desc}</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-rose-50 border border-rose-100 shrink-0">
+          <Heart size={12} className="text-rose-500" fill={wishlist.length > 0 ? 'currentColor' : 'none'} />
+          <span className="text-[11px] font-bold text-rose-700">{t.simulators.lavieahd.wishlistLabel} ({wishlist.length})</span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-3">
+        {LAVIE_PRODUCTS.map((product) => {
+          const saved = wishlist.includes(product.id);
+          const soldOut = product.badge === 'soldout';
+          return (
+            <div key={product.id} className="rounded-xl border border-slate-200 bg-slate-50 p-3 flex flex-col gap-2">
+              <div className="flex items-start justify-between">
+                <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-wide ${soldOut ? 'bg-slate-200 text-slate-500' : 'bg-emerald-100 text-emerald-700'}`}>
+                  {soldOut ? t.simulators.lavieahd.outOfStockBadge : t.simulators.lavieahd.newBadge}
+                </span>
+                <button
+                  onClick={() => toggleWishlist(product.id)}
+                  aria-label={t.simulators.lavieahd.saveLabel}
+                  className="cursor-pointer"
+                >
+                  <Heart size={14} className={saved ? 'text-rose-500' : 'text-slate-300'} fill={saved ? 'currentColor' : 'none'} />
+                </button>
+              </div>
+              <div className="w-full aspect-square rounded-lg bg-gradient-to-br from-rose-100 to-amber-50 flex items-center justify-center">
+                <Gem size={22} className="text-rose-300" />
+              </div>
+              <div className="text-[10px] font-semibold text-slate-800 leading-snug">{product.name[lang]}</div>
+              <div className="text-[11px] font-black text-slate-900">
+                {product.price} {lang === 'en' ? 'SAR' : 'ر.س'}
+              </div>
+              <div className="text-[9px] font-semibold text-rose-500">
+                {saved ? t.simulators.lavieahd.savedLabel : ''}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -790,6 +871,7 @@ const Skills = () => {
   const skillGroups = [
     { title: t.skills.cyber.title, items: t.skills.cyber.items, icon: <Shield size={16} />, color: "indigo" },
     { title: t.skills.ai.title, items: t.skills.ai.items, icon: <Cpu size={16} />, color: "violet" },
+    { title: t.skills.systems.title, items: t.skills.systems.items, icon: <Terminal size={16} />, color: "rose" },
     { title: t.skills.dev.title, items: t.skills.dev.items, icon: <Code2 size={16} />, color: "emerald" },
     { title: t.skills.design.title, items: t.skills.design.items, icon: <Palette size={16} />, color: "amber" },
     { title: t.skills.data.title, items: t.skills.data.items, icon: <Database size={16} />, color: "indigo" }
@@ -800,6 +882,7 @@ const Skills = () => {
     violet: 'bg-violet-50 text-violet-600 border-violet-100',
     emerald: 'bg-emerald-50 text-emerald-600 border-emerald-100',
     amber: 'bg-amber-50 text-amber-600 border-amber-100',
+    rose: 'bg-rose-50 text-rose-600 border-rose-100',
   };
 
   return (
@@ -882,9 +965,22 @@ const Projects = () => {
                     </span>
                     <h3 className="text-3xl font-black text-slate-900 tracking-tight">{project.title}</h3>
                   </div>
-                  <Tag color={project.id === 'cybermind' ? 'indigo' : project.id === 'mueen' ? 'violet' : 'emerald'}>
-                    {lang === 'en' ? 'Case Study' : 'دراسة حالة'}
-                  </Tag>
+                  <div className="flex items-center gap-2 shrink-0">
+                    {project.link && (
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-2.5 py-1 rounded-md text-[10px] font-mono font-semibold uppercase tracking-wider border bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100 transition-colors flex items-center gap-1"
+                      >
+                        {t.projects.caseStudy.visit}
+                        <ExternalLink size={11} />
+                      </a>
+                    )}
+                    <Tag color={project.id === 'cybermind' ? 'indigo' : project.id === 'mueen' ? 'violet' : project.id === 'lavieahd' ? 'rose' : 'emerald'}>
+                      {lang === 'en' ? 'Case Study' : 'دراسة حالة'}
+                    </Tag>
+                  </div>
                 </div>
 
                 <p className="text-[15px] text-slate-600 leading-relaxed mb-6">{project.description}</p>
@@ -930,6 +1026,7 @@ const Projects = () => {
                 {project.id === 'cybermind' && <CyberMindSimulator />}
                 {project.id === 'mueen' && <MueenSimulator />}
                 {project.id === 'dithar' && <DitharSimulator />}
+                {project.id === 'lavieahd' && <LaVieSimulator />}
               </div>
             </div>
           ))}
@@ -1021,8 +1118,14 @@ const Experience = () => {
                     <div className="flex items-center justify-between">
                       <h5 className="text-xs font-bold text-slate-900">{item.title}</h5>
                       {item.link && (
-                        <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-indigo-500 hover:text-indigo-700 transition-colors">
-                          <ExternalLink size={12} />
+                        <a
+                          href={item.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-2 py-0.5 rounded-md text-[9px] font-mono font-semibold uppercase tracking-wider border bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100 transition-colors flex items-center gap-1 shrink-0"
+                        >
+                          {lang === 'en' ? 'Visit' : 'زيارة'}
+                          <ExternalLink size={10} />
                         </a>
                       )}
                     </div>
@@ -1032,6 +1135,33 @@ const Experience = () => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// --- Volunteer ---
+
+const Volunteer = () => {
+  const { t } = useLang();
+
+  return (
+    <section id="volunteer" className="py-24 px-6 bg-slate-50">
+      <div className="max-w-7xl mx-auto">
+        <SectionHeader number="05." title={t.volunteer.title} />
+        <div className="grid sm:grid-cols-2 gap-5">
+          {t.volunteer.items.map((item, i) => (
+            <div key={i} className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-start gap-4">
+              <div className="p-2 rounded-xl bg-rose-50 border border-rose-100 text-rose-600 shrink-0">
+                <Heart size={18} />
+              </div>
+              <div>
+                <h4 className="text-sm font-bold text-slate-900 mb-1.5">{item.title}</h4>
+                <p className="text-[13px] text-slate-500 leading-relaxed">{item.desc}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -1052,7 +1182,7 @@ const Certifications = () => {
   return (
     <section id="certifications" className="py-24 px-6">
       <div className="max-w-7xl mx-auto">
-        <SectionHeader number="05." title={t.certs.title} />
+        <SectionHeader number="06." title={t.certs.title} />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {t.certs.items.map((cert: string, i: number) => (
             <div
@@ -1078,6 +1208,8 @@ const Certifications = () => {
 
 // --- Contact ---
 
+const CONTACT_EMAIL = "biliilez7200@gmail.com";
+
 const Contact = () => {
   const { t, lang } = useLang();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -1092,22 +1224,40 @@ const Contact = () => {
     lang === 'en' ? "Delivered successfully." : "تم الإرسال بنجاح."
   ];
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isSubmitting || submitSuccess) return;
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const name = String(data.get('name') ?? '');
+    const email = String(data.get('email') ?? '');
+    const subject = String(data.get('subject') ?? '');
+    const message = String(data.get('message') ?? '');
+    const body = `${message}\n\n— ${name} (${email})`;
+    const mailtoLink = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
     setIsSubmitting(true);
     setEncryptStep(0);
     let step = 0;
     const iv = setInterval(() => {
       if (step < encLogs.length - 1) { step++; setEncryptStep(step); }
-      else { clearInterval(iv); setTimeout(() => { setIsSubmitting(false); setSubmitSuccess(true); }, 600); }
+      else {
+        clearInterval(iv);
+        setTimeout(() => {
+          setIsSubmitting(false);
+          setSubmitSuccess(true);
+          window.location.href = mailtoLink;
+          form.reset();
+        }, 600);
+      }
     }, 600);
   };
 
   return (
     <section id="contact" className="py-24 px-6 bg-slate-50">
       <div className="max-w-7xl mx-auto">
-        <SectionHeader number="06." title={t.contact.title} subtitle={t.contact.subtitle} />
+        <SectionHeader number="07." title={t.contact.title} subtitle={t.contact.subtitle} />
 
         <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-12 items-start">
 
@@ -1117,7 +1267,7 @@ const Contact = () => {
               {[
                 { label: "LinkedIn", info: "rinas-abdullah", icon: <Linkedin size={16} />, link: "https://linkedin.com/in/rinas-abdullah" },
                 { label: "GitHub", info: "rinas-abdullah", icon: <Github size={16} />, link: "https://github.com/rinas-abdullah" },
-                { label: "Email", info: "biliilee7200@gmail.com", icon: <Mail size={16} />, link: "mailto:biliilee7200@gmail.com" },
+                { label: "Email", info: CONTACT_EMAIL, icon: <Mail size={16} />, link: `mailto:${CONTACT_EMAIL}` },
                 { label: "Phone", info: "+966502423872", icon: <Zap size={16} />, link: "tel:+966502423872" }
               ].map((item, i) => (
                 <a
@@ -1171,7 +1321,7 @@ const Contact = () => {
                 <div className="space-y-1.5">
                   <label className="text-[11px] font-semibold text-slate-500 block">{t.contact.name}</label>
                   <input
-                    required type="text"
+                    required type="text" name="name"
                     placeholder={lang === 'en' ? 'Rinas Abdullah' : 'ريناس عبدالله'}
                     className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:border-indigo-400 focus:bg-white outline-none text-slate-900 text-sm transition-all placeholder-slate-300"
                   />
@@ -1179,7 +1329,7 @@ const Contact = () => {
                 <div className="space-y-1.5">
                   <label className="text-[11px] font-semibold text-slate-500 block">{t.contact.email}</label>
                   <input
-                    required type="email"
+                    required type="email" name="email"
                     placeholder="name@company.com"
                     className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:border-indigo-400 focus:bg-white outline-none text-slate-900 text-sm transition-all placeholder-slate-300"
                   />
@@ -1188,7 +1338,7 @@ const Contact = () => {
               <div className="space-y-1.5">
                 <label className="text-[11px] font-semibold text-slate-500 block">{t.contact.subject}</label>
                 <input
-                  required type="text"
+                  required type="text" name="subject"
                   placeholder={lang === 'en' ? 'Security audit or development project' : 'تدقيق أمني أو مشروع تطوير'}
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:border-indigo-400 focus:bg-white outline-none text-slate-900 text-sm transition-all placeholder-slate-300"
                 />
@@ -1196,7 +1346,7 @@ const Contact = () => {
               <div className="space-y-1.5">
                 <label className="text-[11px] font-semibold text-slate-500 block">{t.contact.message}</label>
                 <textarea
-                  required rows={5}
+                  required rows={5} name="message"
                   placeholder={lang === 'en' ? 'Tell me about your goals and project needs...' : 'أخبرني عن أهدافك واحتياجات مشروعك...'}
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:border-indigo-400 focus:bg-white outline-none text-slate-900 text-sm resize-none transition-all placeholder-slate-300"
                 />
@@ -1246,7 +1396,7 @@ const Footer = () => {
             {[
               { Icon: Linkedin, link: "https://www.linkedin.com/in/rinas-abdullah" },
               { Icon: Github, link: "https://github.com/rinas-abdullah" },
-              { Icon: Mail, link: "mailto:biliilee7200@gmail.com" }
+              { Icon: Mail, link: `mailto:${CONTACT_EMAIL}` }
             ].map(({ Icon, link }, i) => (
               <a
                 key={i}
@@ -1273,13 +1423,25 @@ const Footer = () => {
 
 // --- App Root ---
 
+const readStoredLang = (): Language => {
+  try {
+    return (localStorage.getItem('lang') as Language) || 'en';
+  } catch {
+    return 'en';
+  }
+};
+
 export default function App() {
-  const [lang, setLang] = useState<Language>(() => (localStorage.getItem('lang') as Language) || 'en');
+  const [lang, setLang] = useState<Language>(readStoredLang);
   const [isLoading, setIsLoading] = useState(true);
   const [loadProgress, setLoadProgress] = useState(0);
 
   useEffect(() => {
-    localStorage.setItem('lang', lang);
+    try {
+      localStorage.setItem('lang', lang);
+    } catch {
+      // storage may be unavailable (private mode, blocked cookies); language still works in-memory
+    }
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = lang;
     document.title = lang === 'en'
@@ -1356,6 +1518,7 @@ export default function App() {
               <Skills />
               <Projects />
               <Experience />
+              <Volunteer />
               <Certifications />
               <Contact />
             </main>
