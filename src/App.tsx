@@ -803,6 +803,7 @@ const Skills = () => {
   const skillGroups = [
     { title: t.skills.cyber.title, items: t.skills.cyber.items, icon: <Shield size={16} />, color: "indigo" },
     { title: t.skills.ai.title, items: t.skills.ai.items, icon: <Cpu size={16} />, color: "violet" },
+    { title: t.skills.systems.title, items: t.skills.systems.items, icon: <Terminal size={16} />, color: "rose" },
     { title: t.skills.dev.title, items: t.skills.dev.items, icon: <Code2 size={16} />, color: "emerald" },
     { title: t.skills.design.title, items: t.skills.design.items, icon: <Palette size={16} />, color: "amber" },
     { title: t.skills.data.title, items: t.skills.data.items, icon: <Database size={16} />, color: "indigo" }
@@ -813,6 +814,7 @@ const Skills = () => {
     violet: 'bg-violet-50 text-violet-600 border-violet-100',
     emerald: 'bg-emerald-50 text-emerald-600 border-emerald-100',
     amber: 'bg-amber-50 text-amber-600 border-amber-100',
+    rose: 'bg-rose-50 text-rose-600 border-rose-100',
   };
 
   return (
@@ -1131,7 +1133,7 @@ const Certifications = () => {
 
 // --- Contact ---
 
-const CONTACT_EMAIL = "biliilee7200@gmail.com";
+const CONTACT_EMAIL = "biliilez7200@gmail.com";
 
 const Contact = () => {
   const { t, lang } = useLang();
