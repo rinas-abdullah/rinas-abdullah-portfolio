@@ -1118,8 +1118,14 @@ const Experience = () => {
                     <div className="flex items-center justify-between">
                       <h5 className="text-xs font-bold text-slate-900">{item.title}</h5>
                       {item.link && (
-                        <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-indigo-500 hover:text-indigo-700 transition-colors">
-                          <ExternalLink size={12} />
+                        <a
+                          href={item.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-2 py-0.5 rounded-md text-[9px] font-mono font-semibold uppercase tracking-wider border bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100 transition-colors flex items-center gap-1 shrink-0"
+                        >
+                          {lang === 'en' ? 'Visit' : 'زيارة'}
+                          <ExternalLink size={10} />
                         </a>
                       )}
                     </div>
