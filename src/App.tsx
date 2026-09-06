@@ -34,10 +34,11 @@ import { translations } from './translations';
 
 // --- Context & Hooks ---
 type Language = 'en' | 'ar';
+type Translations = typeof translations['en'];
 interface LanguageContextType {
   lang: Language;
   setLang: (lang: Language) => void;
-  t: any;
+  t: Translations;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -161,6 +162,7 @@ const Navbar = () => {
     { name: t.nav.skills, href: '#skills' },
     { name: t.nav.projects, href: '#projects' },
     { name: t.nav.experience, href: '#experience' },
+    { name: t.nav.volunteer, href: '#volunteer' },
     { name: t.nav.certs, href: '#certifications' },
     { name: t.nav.contact, href: '#contact' },
   ];
@@ -209,7 +211,11 @@ const Navbar = () => {
             <Globe size={10} className="text-slate-500" />
             <span>{lang === 'en' ? 'AR' : 'EN'}</span>
           </button>
-          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-slate-900 hover:text-indigo-600 transition-colors p-1">
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? (lang === 'en' ? 'Close menu' : 'إغلاق القائمة') : (lang === 'en' ? 'Open menu' : 'فتح القائمة')}
+            className="text-slate-900 hover:text-indigo-600 transition-colors p-1"
+          >
             {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
@@ -431,23 +437,28 @@ const CyberMindSimulator = () => {
   );
 };
 
+const MUEEN_SECTORS = [
+  { id: 1, name: { en: 'Muzdalifah Bridge', ar: 'جسر مزدلفة' }, initialCount: 20 },
+  { id: 2, name: { en: 'Arafat Gate 3', ar: 'بوابة عرفات ٣' }, initialCount: 45 },
+  { id: 3, name: { en: 'Mina Corridor C', ar: 'ممر منى ج' }, initialCount: 15 },
+  { id: 4, name: { en: 'Jamarat Tunnel 2', ar: 'نفق الجمرات ٢' }, initialCount: 85 },
+  { id: 5, name: { en: 'Al-Haram Piazza', ar: 'ساحة الحرم' }, initialCount: 60 },
+  { id: 6, name: { en: 'Station 4 Plaza', ar: 'ساحة المحطة ٤' }, initialCount: 30 },
+] as const;
+
 const MueenSimulator = () => {
   const { lang, t } = useLang();
-  const [sectors, setSectors] = useState([
-    { id: 1, name: lang === 'en' ? 'Muzdalifah Bridge' : 'جسر مزدلفة', count: 20 },
-    { id: 2, name: lang === 'en' ? 'Arafat Gate 3' : 'بوابة عرفات ٣', count: 45 },
-    { id: 3, name: lang === 'en' ? 'Mina Corridor C' : 'ممر منى ج', count: 15 },
-    { id: 4, name: lang === 'en' ? 'Jamarat Tunnel 2' : 'نفق الجمرات ٢', count: 85 },
-    { id: 5, name: lang === 'en' ? 'Al-Haram Piazza' : 'ساحة الحرم', count: 60 },
-    { id: 6, name: lang === 'en' ? 'Station 4 Plaza' : 'ساحة المحطة ٤', count: 30 }
-  ]);
+  const [counts, setCounts] = useState<Record<number, number>>(
+    () => Object.fromEntries(MUEEN_SECTORS.map(s => [s.id, s.initialCount]))
+  );
+  const sectors = MUEEN_SECTORS.map(s => ({ id: s.id, name: s.name[lang], count: counts[s.id] }));
 
   const handleSectorClick = (id: number) => {
-    setSectors(prev => prev.map(sec => {
-      if (sec.id !== id) return sec;
-      const next = sec.count === 20 ? 55 : sec.count === 55 ? 95 : 15;
-      return { ...sec, count: next };
-    }));
+    setCounts(prev => {
+      const current = prev[id];
+      const next = current === 20 ? 55 : current === 55 ? 95 : 15;
+      return { ...prev, [id]: next };
+    });
   };
 
   const avg = Math.round(sectors.reduce((a, c) => a + c.count, 0) / sectors.length);
@@ -1038,6 +1049,33 @@ const Experience = () => {
   );
 };
 
+// --- Volunteer ---
+
+const Volunteer = () => {
+  const { t } = useLang();
+
+  return (
+    <section id="volunteer" className="py-24 px-6 bg-slate-50">
+      <div className="max-w-7xl mx-auto">
+        <SectionHeader number="05." title={t.volunteer.title} />
+        <div className="grid sm:grid-cols-2 gap-5">
+          {t.volunteer.items.map((item, i) => (
+            <div key={i} className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-start gap-4">
+              <div className="p-2 rounded-xl bg-rose-50 border border-rose-100 text-rose-600 shrink-0">
+                <Heart size={18} />
+              </div>
+              <div>
+                <h4 className="text-sm font-bold text-slate-900 mb-1.5">{item.title}</h4>
+                <p className="text-[13px] text-slate-500 leading-relaxed">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 // --- Certifications ---
 
 const Certifications = () => {
@@ -1052,7 +1090,7 @@ const Certifications = () => {
   return (
     <section id="certifications" className="py-24 px-6">
       <div className="max-w-7xl mx-auto">
-        <SectionHeader number="05." title={t.certs.title} />
+        <SectionHeader number="06." title={t.certs.title} />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {t.certs.items.map((cert: string, i: number) => (
             <div
@@ -1078,6 +1116,8 @@ const Certifications = () => {
 
 // --- Contact ---
 
+const CONTACT_EMAIL = "biliilee7200@gmail.com";
+
 const Contact = () => {
   const { t, lang } = useLang();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -1092,22 +1132,40 @@ const Contact = () => {
     lang === 'en' ? "Delivered successfully." : "تم الإرسال بنجاح."
   ];
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isSubmitting || submitSuccess) return;
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const name = String(data.get('name') ?? '');
+    const email = String(data.get('email') ?? '');
+    const subject = String(data.get('subject') ?? '');
+    const message = String(data.get('message') ?? '');
+    const body = `${message}\n\n— ${name} (${email})`;
+    const mailtoLink = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
     setIsSubmitting(true);
     setEncryptStep(0);
     let step = 0;
     const iv = setInterval(() => {
       if (step < encLogs.length - 1) { step++; setEncryptStep(step); }
-      else { clearInterval(iv); setTimeout(() => { setIsSubmitting(false); setSubmitSuccess(true); }, 600); }
+      else {
+        clearInterval(iv);
+        setTimeout(() => {
+          setIsSubmitting(false);
+          setSubmitSuccess(true);
+          window.location.href = mailtoLink;
+          form.reset();
+        }, 600);
+      }
     }, 600);
   };
 
   return (
     <section id="contact" className="py-24 px-6 bg-slate-50">
       <div className="max-w-7xl mx-auto">
-        <SectionHeader number="06." title={t.contact.title} subtitle={t.contact.subtitle} />
+        <SectionHeader number="07." title={t.contact.title} subtitle={t.contact.subtitle} />
 
         <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-12 items-start">
 
@@ -1117,7 +1175,7 @@ const Contact = () => {
               {[
                 { label: "LinkedIn", info: "rinas-abdullah", icon: <Linkedin size={16} />, link: "https://linkedin.com/in/rinas-abdullah" },
                 { label: "GitHub", info: "rinas-abdullah", icon: <Github size={16} />, link: "https://github.com/rinas-abdullah" },
-                { label: "Email", info: "biliilee7200@gmail.com", icon: <Mail size={16} />, link: "mailto:biliilee7200@gmail.com" },
+                { label: "Email", info: CONTACT_EMAIL, icon: <Mail size={16} />, link: `mailto:${CONTACT_EMAIL}` },
                 { label: "Phone", info: "+966502423872", icon: <Zap size={16} />, link: "tel:+966502423872" }
               ].map((item, i) => (
                 <a
@@ -1171,7 +1229,7 @@ const Contact = () => {
                 <div className="space-y-1.5">
                   <label className="text-[11px] font-semibold text-slate-500 block">{t.contact.name}</label>
                   <input
-                    required type="text"
+                    required type="text" name="name"
                     placeholder={lang === 'en' ? 'Rinas Abdullah' : 'ريناس عبدالله'}
                     className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:border-indigo-400 focus:bg-white outline-none text-slate-900 text-sm transition-all placeholder-slate-300"
                   />
@@ -1179,7 +1237,7 @@ const Contact = () => {
                 <div className="space-y-1.5">
                   <label className="text-[11px] font-semibold text-slate-500 block">{t.contact.email}</label>
                   <input
-                    required type="email"
+                    required type="email" name="email"
                     placeholder="name@company.com"
                     className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:border-indigo-400 focus:bg-white outline-none text-slate-900 text-sm transition-all placeholder-slate-300"
                   />
@@ -1188,7 +1246,7 @@ const Contact = () => {
               <div className="space-y-1.5">
                 <label className="text-[11px] font-semibold text-slate-500 block">{t.contact.subject}</label>
                 <input
-                  required type="text"
+                  required type="text" name="subject"
                   placeholder={lang === 'en' ? 'Security audit or development project' : 'تدقيق أمني أو مشروع تطوير'}
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:border-indigo-400 focus:bg-white outline-none text-slate-900 text-sm transition-all placeholder-slate-300"
                 />
@@ -1196,7 +1254,7 @@ const Contact = () => {
               <div className="space-y-1.5">
                 <label className="text-[11px] font-semibold text-slate-500 block">{t.contact.message}</label>
                 <textarea
-                  required rows={5}
+                  required rows={5} name="message"
                   placeholder={lang === 'en' ? 'Tell me about your goals and project needs...' : 'أخبرني عن أهدافك واحتياجات مشروعك...'}
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:border-indigo-400 focus:bg-white outline-none text-slate-900 text-sm resize-none transition-all placeholder-slate-300"
                 />
@@ -1246,7 +1304,7 @@ const Footer = () => {
             {[
               { Icon: Linkedin, link: "https://www.linkedin.com/in/rinas-abdullah" },
               { Icon: Github, link: "https://github.com/rinas-abdullah" },
-              { Icon: Mail, link: "mailto:biliilee7200@gmail.com" }
+              { Icon: Mail, link: `mailto:${CONTACT_EMAIL}` }
             ].map(({ Icon, link }, i) => (
               <a
                 key={i}
@@ -1273,13 +1331,25 @@ const Footer = () => {
 
 // --- App Root ---
 
+const readStoredLang = (): Language => {
+  try {
+    return (localStorage.getItem('lang') as Language) || 'en';
+  } catch {
+    return 'en';
+  }
+};
+
 export default function App() {
-  const [lang, setLang] = useState<Language>(() => (localStorage.getItem('lang') as Language) || 'en');
+  const [lang, setLang] = useState<Language>(readStoredLang);
   const [isLoading, setIsLoading] = useState(true);
   const [loadProgress, setLoadProgress] = useState(0);
 
   useEffect(() => {
-    localStorage.setItem('lang', lang);
+    try {
+      localStorage.setItem('lang', lang);
+    } catch {
+      // storage may be unavailable (private mode, blocked cookies); language still works in-memory
+    }
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = lang;
     document.title = lang === 'en'
@@ -1356,6 +1426,7 @@ export default function App() {
               <Skills />
               <Projects />
               <Experience />
+              <Volunteer />
               <Certifications />
               <Contact />
             </main>
