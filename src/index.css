@@ -1,0 +1,232 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Outfit", "IBM Plex Sans Arabic", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  html {
+    min-height: 100%;
+    background: #ffffff;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply min-h-screen bg-white text-slate-900 antialiased overflow-x-hidden;
+    @apply selection:bg-violet-100 selection:text-violet-900;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+/* Subtle background dot grid */
+@utility bg-dot-grid {
+  background-image: radial-gradient(rgba(15, 23, 42, 0.055) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+/* Section divider */
+@utility section-alt {
+  background-color: #f8fafc;
+}
+
+/* Terminal — dark terminal on light page is intentional and looks pro */
+.terminal-input-prefix {
+  @apply text-emerald-400 font-mono font-bold select-none text-[11px];
+}
+
+@keyframes terminal-cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 13px;
+  background-color: #a3e635;
+  animation: terminal-cursor-blink 1s step-end infinite;
+  vertical-align: middle;
+  margin-left: 3px;
+}
+
+/* Timeline node */
+.timeline-pulse-node {
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+  animation: node-pulse 3s ease-in-out infinite;
+}
+
+@keyframes node-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+/* Smooth card hover lift */
+.card-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+/* Glow card — subtle mouse-tracking radial gradient for light theme */
+.glow-card-container {
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.glow-card-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+    rgba(99, 102, 241, 0.055),
+    transparent 40%
+  );
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.glow-card-container:hover::before {
+  opacity: 1;
+}
+
+.glow-card-border {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(
+    350px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+    rgba(99, 102, 241, 0.35),
+    transparent 40%
+  );
+  z-index: 2;
+  pointer-events: none;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.glow-card-container:hover .glow-card-border {
+  opacity: 1;
+}
+
+/* Scrollbar — clean, light */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Custom cursor */
+body.has-custom-cursor {
+  cursor: none;
+}
+body.has-custom-cursor a,
+body.has-custom-cursor button,
+body.has-custom-cursor input,
+body.has-custom-cursor textarea,
+body.has-custom-cursor [role="button"] {
+  cursor: none;
+}
+
+.custom-cursor {
+  position: fixed;
+  top: 0; left: 0;
+  width: 20px; height: 20px;
+  border: 1.5px solid rgba(99, 102, 241, 0.5);
+  border-radius: 50%;
+  background: rgba(99, 102, 241, 0.04);
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: width 0.15s ease, height 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.custom-cursor-inner {
+  position: fixed;
+  top: 0; left: 0;
+  width: 4px; height: 4px;
+  background: #6366f1;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+}
+
+.cursor-hover .custom-cursor {
+  width: 38px; height: 38px;
+  border-color: rgba(99, 102, 241, 0.8);
+  background: rgba(99, 102, 241, 0.08);
+}
+.cursor-hover .custom-cursor-inner {
+  background: #4f46e5;
+  width: 5px; height: 5px;
+}
+.cursor-active .custom-cursor {
+  width: 14px; height: 14px;
+  background: rgba(99, 102, 241, 0.18);
+}
+
+/* Floating animation for subtle bg blobs */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-18px) scale(1.02); }
+}
+.animate-float-slow {
+  animation: float-slow 9s ease-in-out infinite;
+}
+
+@keyframes float-slow-alt {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-24px) scale(0.98); }
+}
+.animate-float-slow-alt {
+  animation: float-slow-alt 12s ease-in-out infinite;
+}
+
+/* Globe spin */
+@keyframes spin-slow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 15s linear infinite;
+}
+
+/* Typewriter role cursor — uses same class as terminal-cursor but scoped via text-indigo */
+.hero-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background-color: #6366f1;
+  animation: terminal-cursor-blink 1s step-end infinite;
+  vertical-align: text-bottom;
+  margin-left: 2px;
+  border-radius: 1px;
+}
+
+/* RTL support */
+[dir="rtl"] {
+  font-family: "IBM Plex Sans Arabic", "Inter", sans-serif;
+}
