@@ -15,7 +15,7 @@ export const translations = {
       name: "Rinas Abdullah",
       greeting: "System.Initialize(); // Welcome to my terminal",
       titles: [
-        "Founder & CTO, Dithar",
+        "Founder & CEO, Dithar",
         "Cybersecurity Architect",
         "AI Innovation Leader",
         "Healthcare Systems Innovator"
@@ -30,7 +30,7 @@ export const translations = {
     },
     about: {
       title: "Cybersecurity & Creative Web Systems",
-      p1: "Cybersecurity and AI-driven systems developer with First Class Honors from King Abdulaziz University. Founder & CTO of Dithar, an AI-powered healthcare platform, and a multi-hackathon winner recognized for shipping enterprise-grade prototypes in 24-48 hour sprints. I specialize in secure system design, vulnerability assessment, AI-powered platforms, and modern web experiences that feel premium and futuristic.",
+      p1: "Cybersecurity and AI-driven systems developer with First Class Honors from King Abdulaziz University. Founder & CEO of Dithar, an AI-powered healthcare platform, and a multi-hackathon winner recognized for shipping enterprise-grade prototypes in 24-48 hour sprints. I specialize in secure system design, vulnerability assessment, AI-powered platforms, and modern web experiences that feel premium and futuristic.",
       p2: "I build immersive digital solutions that fuse cybersecurity, artificial intelligence, creative UI/UX, and elegant web design. My work includes adaptive learning platforms, smart safety systems, and highly interactive web interfaces.",
       p3: "I am deeply committed to premium storytelling, cinematic layouts, and intelligent user experiences. My goal is to deliver websites that are not only secure and performant, but also award-worthy, visually immersive, and memorable.",
       interests: [
@@ -106,7 +106,7 @@ export const translations = {
         {
           id: "dithar",
           title: "Dithar",
-          tag: "Founder & CTO — Smart Insole Healthcare Platform",
+          tag: "Founder & CEO — Smart Insole Healthcare Platform",
           description: "A smart medical insole (Smart PAD) paired with an AI-driven clinical platform that continuously tracks plantar pressure, gait, and micro-temperature after a patient leaves the hospital, catching complications before they become visible. Founded and leading a cross-functional team of 6 co-founders.",
           problem: "Patient monitoring stops the moment a patient is discharged, so early signs of diabetic foot ulcers, fall risk, or post-stroke complications often go undetected until they need costly intervention.",
           solution: "Built a wearable Smart PAD with pressure, motion (IMU), and temperature sensors feeding an AI/ML core, connected to a full clinical platform with patient, doctor, and hospital portals, live telemetry, and a personal motion baseline that flags micro-deviations early.",
@@ -338,7 +338,7 @@ export const translations = {
       greeting: "System.Initialize(); // مرحبًا بك في نافذتي التفاعلية",
       name: "ريناس عبدالله",
       titles: [
-        "مؤسِّسة و CTO في دثار",
+        "مؤسِّسة ورئيسة تنفيذية لدثار",
         "مهندسة أمن سيبراني",
         "قائدة ابتكار في الذكاء الاصطناعي",
         "مبتكرة أنظمة صحية"
@@ -349,11 +349,11 @@ export const translations = {
       phone: "+966502423872",
       cta_projects: "تصفح الأعمال",
       cta_contact: "تواصل الآن",
-      description: "مهندسة أمن سيبراني وقائدة ابتكار في الذكاء الاصطناعي بتقدير ممتاز مع مرتبة الشرف الأولى من جامعة الملك عبدالعزيز، مؤسِّسة ومديرة تقنية لمنصة دثار الصحية الذكية، إلى جانب بناء تجارب ويب مستقبلية تجمع بين الحماية الفائقة، والذكاء البرمجي، والتصميم البصري الفاخر."
+      description: "مهندسة أمن سيبراني وقائدة ابتكار في الذكاء الاصطناعي بتقدير ممتاز مع مرتبة الشرف الأولى من جامعة الملك عبدالعزيز، مؤسِّسة ورئيسة تنفيذية لمنصة دثار الصحية الذكية، إلى جانب بناء تجارب ويب مستقبلية تجمع بين الحماية الفائقة، والذكاء البرمجي، والتصميم البصري الفاخر."
     },
     about: {
       title: "الأمن السيبراني والتقنيات الحديثة",
-      p1: "مطورة أمن سيبراني وذكاء اصطناعي بتقدير ممتاز مع مرتبة الشرف الأولى من جامعة الملك عبدالعزيز. مؤسِّسة ومديرة تقنية (CTO) لمنصة دثار الصحية المدعومة بالذكاء الاصطناعي، وفائزة في عدة هاكاثونات بفضل قدرتها على تسليم نماذج أولية احترافية خلال 24-48 ساعة. أتخصص في تصميم الأنظمة الآمنة، تقييم الثغرات الأمنية، تطوير المنصات المدعومة بالذكاء الاصطناعي، وتصميم واجهات ويب راقية وتفاعلية.",
+      p1: "مطورة أمن سيبراني وذكاء اصطناعي بتقدير ممتاز مع مرتبة الشرف الأولى من جامعة الملك عبدالعزيز. مؤسِّسة ورئيسة تنفيذية (CEO) لمنصة دثار الصحية المدعومة بالذكاء الاصطناعي، وفائزة في عدة هاكاثونات بفضل قدرتها على تسليم نماذج أولية احترافية خلال 24-48 ساعة. أتخصص في تصميم الأنظمة الآمنة، تقييم الثغرات الأمنية، تطوير المنصات المدعومة بالذكاء الاصطناعي، وتصميم واجهات ويب راقية وتفاعلية.",
       p2: "أبني حلولاً رقمية تجمع بين متانة الأمن السيبراني، وقدرات الذكاء الاصطناعي التوليدي، وتصميم واجهات المستخدم الحديثة، ويشمل ذلك منصات التعلم التكيفية، لوحات التحكم لتحليل البيانات الجغرافية الذكية، وأنظمة الاستشعار الذكية.",
       p3: "أهتم بأدق تفاصيل التفاعل والحركة والسرد البصري للتجربة الرقمية. هدفي هو تقديم مواقع ويب ليست فقط آمنة وعالية الأداء، بل مبهرة بصرياً وتترك أثراً دائماً لدى الزائر.",
       interests: [
@@ -429,7 +429,7 @@ export const translations = {
         {
           id: "dithar",
           title: "دثار",
-          tag: "مؤسِّسة و CTO — منصة صحية بلباد ذكي",
+          tag: "مؤسِّسة ورئيسة تنفيذية — منصة صحية بلباد ذكي",
           description: "لباد طبي ذكي (Smart PAD) مرتبط بمنصة سريرية مدعومة بالذكاء الاصطناعي، يراقب باستمرار توزيع الضغط وطريقة المشي والتغيرات الحرارية الدقيقة للمريض بعد خروجه من المستشفى، ليكتشف المضاعفات قبل ظهورها. أسّست المشروع وأقود فريقاً مشتركاً من 6 شركاء مؤسسين.",
           problem: "تتوقف متابعة المريض فور خروجه من المستشفى، فتمر علامات مبكرة لتقرحات القدم السكري أو اختلال التوازن أو مضاعفات ما بعد السكتة الدماغية دون رصد حتى تتفاقم وتحتاج تدخلاً مكلفاً.",
           solution: "بنيت لباداً ذكياً بمستشعرات ضغط وحركة (IMU) وحرارة متصلة بنواة ذكاء اصطناعي، ومنصة سريرية كاملة تضم بوابات للمريض والطبيب والمستشفى، وتتبعاً لحظياً، وخط أساس حركي شخصي يكشف أدق الانحرافات مبكراً.",
