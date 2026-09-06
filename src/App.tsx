@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, useContext, useRef } from 'react';
+import { useState, useEffect, createContext, useContext, useRef, Suspense, lazy } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Shield,
@@ -34,6 +34,8 @@ import {
   Gem,
 } from 'lucide-react';
 import { translations } from './translations';
+
+const HeroScene = lazy(() => import('./components/HeroScene'));
 
 // --- Context & Hooks ---
 type Language = 'en' | 'ar';
@@ -688,13 +690,45 @@ const LaVieSimulator = () => {
 
 // --- Section Header ---
 
+// --- Scroll Storytelling ---
+
+const Reveal = ({
+  children,
+  delay = 0,
+  className = '',
+  y = 32,
+  x = 0,
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+  y?: number;
+  x?: number;
+}) => (
+  <motion.div
+    initial={{ opacity: 0, y, x }}
+    whileInView={{ opacity: 1, y: 0, x: 0 }}
+    viewport={{ once: true, margin: '-80px' }}
+    transition={{ duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] }}
+    className={className}
+  >
+    {children}
+  </motion.div>
+);
+
 const SectionHeader = ({ number, title, subtitle }: { number: string; title: string; subtitle?: string }) => {
   const { lang } = useLang();
   return (
-    <div className="mb-14">
+    <Reveal className="mb-14">
       <div className="flex items-center gap-3 mb-3">
         <span className="text-[11px] font-mono font-semibold text-indigo-500 tracking-wider">{number}</span>
-        <div className="h-px w-8 bg-indigo-200" />
+        <motion.div
+          initial={{ width: 0 }}
+          whileInView={{ width: 32 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="h-px bg-indigo-200"
+        />
       </div>
       <h2 className="text-4xl md:text-5xl font-heading font-black text-slate-900 tracking-tight mb-3">
         {title}
@@ -704,7 +738,7 @@ const SectionHeader = ({ number, title, subtitle }: { number: string; title: str
           {subtitle}
         </p>
       )}
-    </div>
+    </Reveal>
   );
 };
 
@@ -791,6 +825,52 @@ const Hero = () => {
   );
 };
 
+// --- Signature 3D ---
+
+const Signature = () => {
+  const { t } = useLang();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [shouldLoad, setShouldLoad] = useState(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setShouldLoad(true); observer.disconnect(); } },
+      { rootMargin: '400px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section className="py-16 px-6 relative overflow-hidden">
+      <div className="max-w-4xl mx-auto text-center">
+        <Reveal>
+          <h3 className="text-xl md:text-2xl font-heading font-bold text-slate-900 tracking-tight mb-2">
+            {t.signature.title}
+          </h3>
+          <p className="text-slate-500 text-sm max-w-lg mx-auto mb-2">{t.signature.caption}</p>
+        </Reveal>
+        <Reveal delay={0.15}>
+          <div ref={containerRef}>
+            {shouldLoad ? (
+              <Suspense
+                fallback={<div className="w-full h-[320px] sm:h-[420px] flex items-center justify-center text-slate-300 text-xs font-mono">// loading core...</div>}
+              >
+                <HeroScene />
+              </Suspense>
+            ) : (
+              <div className="w-full h-[320px] sm:h-[420px]" />
+            )}
+          </div>
+          <p className="text-[11px] font-mono text-slate-400 mt-1">{t.signature.hint}</p>
+        </Reveal>
+      </div>
+    </section>
+  );
+};
+
 // --- About ---
 
 const About = () => {
@@ -808,7 +888,7 @@ const About = () => {
         <SectionHeader number="01." title={t.nav.about} />
 
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <div className="space-y-5">
+          <Reveal x={-28} y={0} className="space-y-5">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-xl bg-indigo-50 text-indigo-600"><User size={18} /></div>
               <h3 className="text-lg font-bold text-slate-900">{t.about.title}</h3>
@@ -825,9 +905,9 @@ const About = () => {
                 </span>
               ))}
             </div>
-          </div>
+          </Reveal>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 items-start">
             {[
               { icon: <Shield size={24} />, label: lang === 'en' ? "Security & GRC" : "الأمن والحوكمة", desc: lang === 'en' ? "Vulnerability audit & standards" : "تدقيق الثغرات والمعايير", color: "indigo" },
               { icon: <Cpu size={24} />, label: lang === 'en' ? "AI Systems" : "نظم الذكاء الاصطناعي", desc: lang === 'en' ? "Adaptive learning & analytics" : "التعلم التكيفي والتحليلات", color: "violet" },
@@ -836,18 +916,19 @@ const About = () => {
             ].map((card, i) => {
               const accent = card.color === 'indigo' ? 'bg-indigo-50 text-indigo-600 border-indigo-200/60' : card.color === 'violet' ? 'bg-violet-50 text-violet-600 border-violet-200/60' : card.color === 'emerald' ? 'bg-emerald-50 text-emerald-600 border-emerald-200/60' : 'bg-amber-50 text-amber-600 border-amber-200/60';
               return (
-                <div
-                  key={i}
-                  onMouseMove={handleMouseMove}
-                  className="glow-card-container p-6 rounded-2xl bg-white border border-slate-200 shadow-sm card-lift group"
-                >
-                  <div className="glow-card-border" />
-                  <div className={`w-10 h-10 rounded-xl border flex items-center justify-center mb-4 group-hover:scale-110 transition-transform ${accent}`}>
-                    {card.icon}
+                <Reveal key={i} delay={i * 0.1} className={i % 2 === 1 ? 'sm:mt-8' : ''}>
+                  <div
+                    onMouseMove={handleMouseMove}
+                    className="glow-card-container p-6 rounded-2xl bg-white border border-slate-200 shadow-sm card-lift group"
+                  >
+                    <div className="glow-card-border" />
+                    <div className={`w-10 h-10 rounded-xl border flex items-center justify-center mb-4 group-hover:scale-110 transition-transform ${accent}`}>
+                      {card.icon}
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 mb-1">{card.label}</h4>
+                    <p className="text-[12px] text-slate-500">{card.desc}</p>
                   </div>
-                  <h4 className="text-sm font-bold text-slate-900 mb-1">{card.label}</h4>
-                  <p className="text-[12px] text-slate-500">{card.desc}</p>
-                </div>
+                </Reveal>
               );
             })}
           </div>
@@ -890,31 +971,32 @@ const Skills = () => {
       <div className="max-w-7xl mx-auto">
         <SectionHeader number="02." title={t.skills.title} />
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 items-start">
           {skillGroups.map((group, i) => (
-            <div
-              key={i}
-              onMouseMove={handleMouseMove}
-              className="glow-card-container p-6 rounded-2xl bg-white border border-slate-200 shadow-sm"
-            >
-              <div className="glow-card-border" />
-              <div className="flex items-center gap-2.5 mb-5">
-                <div className={`p-1.5 rounded-lg border ${accentMap[group.color]}`}>
-                  {group.icon}
+            <Reveal key={i} delay={(i % 3) * 0.1} className={i % 3 === 1 ? 'lg:mt-9' : ''}>
+              <div
+                onMouseMove={handleMouseMove}
+                className="glow-card-container p-6 rounded-2xl bg-white border border-slate-200 shadow-sm"
+              >
+                <div className="glow-card-border" />
+                <div className="flex items-center gap-2.5 mb-5">
+                  <div className={`p-1.5 rounded-lg border ${accentMap[group.color]}`}>
+                    {group.icon}
+                  </div>
+                  <h3 className="text-sm font-bold text-slate-900">{group.title}</h3>
                 </div>
-                <h3 className="text-sm font-bold text-slate-900">{group.title}</h3>
+                <div className="flex flex-wrap gap-2">
+                  {group.items.map((skill: string) => (
+                    <span
+                      key={skill}
+                      className="px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200 text-slate-600 text-[11px] font-medium hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-200 transition-colors cursor-default"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {group.items.map((skill: string) => (
-                  <span
-                    key={skill}
-                    className="px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200 text-slate-600 text-[11px] font-medium hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-200 transition-colors cursor-default"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -950,9 +1032,22 @@ const Projects = () => {
           </div>
         </div>
 
-        <div className="space-y-20">
-          {t.projects.items.map((project: any, i: number) => (
-            <div key={project.id} className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 items-start">
+        <div className="space-y-24">
+          {t.projects.items.map((project: any, i: number) => {
+            const isEven = i % 2 === 0;
+            return (
+            <div key={project.id} className={`relative grid lg:grid-cols-[1.1fr_0.9fr] gap-8 items-start ${isEven ? '' : 'lg:mt-12'}`}>
+              <span
+                aria-hidden="true"
+                className={`hidden lg:block absolute -top-10 text-8xl font-heading font-black text-slate-100 select-none pointer-events-none ${isEven ? 'left-0' : 'right-0'}`}
+              >
+                0{i + 1}
+              </span>
+              <Reveal
+                x={isEven ? -28 : 28}
+                y={0}
+                className={isEven ? 'order-1' : 'order-1 lg:order-2'}
+              >
               <div
                 onMouseMove={handleMouseMove}
                 className="glow-card-container p-8 rounded-2xl bg-white border border-slate-200 shadow-sm"
@@ -1021,15 +1116,22 @@ const Projects = () => {
                   </div>
                 </div>
               </div>
+              </Reveal>
 
-              <div className="lg:sticky lg:top-24">
+              <Reveal
+                x={isEven ? 28 : -28}
+                y={0}
+                delay={0.1}
+                className={`lg:sticky lg:top-24 ${isEven ? 'order-2' : 'order-2 lg:order-1'}`}
+              >
                 {project.id === 'cybermind' && <CyberMindSimulator />}
                 {project.id === 'mueen' && <MueenSimulator />}
                 {project.id === 'dithar' && <DitharSimulator />}
                 {project.id === 'lavieahd' && <LaVieSimulator />}
-              </div>
+              </Reveal>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
@@ -1055,7 +1157,7 @@ const Experience = () => {
             </h3>
 
             {t.experience.jobs.map((job: any, i: number) => (
-              <div key={i} className="relative group">
+              <Reveal key={i} x={-20} y={0} className="relative group">
                 <div className="absolute -left-[37px] top-1.5 w-3.5 h-3.5 rounded-full bg-white border-2 border-indigo-400 timeline-pulse-node" />
                 <div className="space-y-2">
                   <div className="flex flex-wrap items-center justify-between gap-2">
@@ -1072,7 +1174,7 @@ const Experience = () => {
                     ))}
                   </ul>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
 
@@ -1152,15 +1254,17 @@ const Volunteer = () => {
         <SectionHeader number="05." title={t.volunteer.title} />
         <div className="grid sm:grid-cols-2 gap-5">
           {t.volunteer.items.map((item, i) => (
-            <div key={i} className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-start gap-4">
-              <div className="p-2 rounded-xl bg-rose-50 border border-rose-100 text-rose-600 shrink-0">
-                <Heart size={18} />
+            <Reveal key={i} delay={i * 0.1}>
+              <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-start gap-4">
+                <div className="p-2 rounded-xl bg-rose-50 border border-rose-100 text-rose-600 shrink-0">
+                  <Heart size={18} />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-slate-900 mb-1.5">{item.title}</h4>
+                  <p className="text-[13px] text-slate-500 leading-relaxed">{item.desc}</p>
+                </div>
               </div>
-              <div>
-                <h4 className="text-sm font-bold text-slate-900 mb-1.5">{item.title}</h4>
-                <p className="text-[13px] text-slate-500 leading-relaxed">{item.desc}</p>
-              </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -1185,20 +1289,21 @@ const Certifications = () => {
         <SectionHeader number="06." title={t.certs.title} />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {t.certs.items.map((cert: string, i: number) => (
-            <div
-              key={i}
-              onMouseMove={handleMouseMove}
-              className="glow-card-container p-5 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-start gap-4 card-lift group"
-            >
-              <div className="glow-card-border" />
-              <div className="p-2 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-600 group-hover:scale-110 transition-transform shrink-0">
-                <Award size={16} />
+            <Reveal key={i} delay={(i % 3) * 0.08}>
+              <div
+                onMouseMove={handleMouseMove}
+                className="glow-card-container p-5 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-start gap-4 card-lift group"
+              >
+                <div className="glow-card-border" />
+                <div className="p-2 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-600 group-hover:scale-110 transition-transform shrink-0">
+                  <Award size={16} />
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-[13px] font-semibold text-slate-800 leading-relaxed">{cert}</h4>
+                  <div className="mt-2 h-0.5 w-6 bg-indigo-300 group-hover:w-full transition-all duration-500 rounded-full" />
+                </div>
               </div>
-              <div className="flex-1">
-                <h4 className="text-[13px] font-semibold text-slate-800 leading-relaxed">{cert}</h4>
-                <div className="mt-2 h-0.5 w-6 bg-indigo-300 group-hover:w-full transition-all duration-500 rounded-full" />
-              </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -1514,6 +1619,7 @@ export default function App() {
             <Navbar />
             <main>
               <Hero />
+              <Signature />
               <About />
               <Skills />
               <Projects />
