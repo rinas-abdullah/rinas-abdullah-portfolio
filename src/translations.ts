@@ -102,12 +102,13 @@ export const translations = {
         {
           id: "dithar",
           title: "Dithar",
-          tag: "Smart Health & Safety System",
-          description: "An IoT-integrated system designed to protect pilgrims by detecting heat stress and physical exhaustion using intelligent sensors.",
-          problem: "Extreme environmental conditions during Hajj pose significant health risks that require proactive, real-time monitoring.",
-          solution: "Developed an IoT ecosystem with wearable sensors and an intelligent dashboard for real-time vital sign tracking.",
-          tech: ["IoT Sensors", "Firebase", "React Native", "Data Analytics", "Wearable Tech"],
-          impact: "Enables early detection of exhaustion, significantly reducing the risk of heatstroke in critical crowds."
+          tag: "Smart Insole for Post-Discharge Patient Monitoring",
+          description: "A smart medical insole (Smart PAD) paired with an AI-driven clinical platform that continuously tracks plantar pressure, gait, and micro-temperature after a patient leaves the hospital, catching complications before they become visible.",
+          problem: "Patient monitoring stops the moment a patient is discharged, so early signs of diabetic foot ulcers, fall risk, or post-stroke complications often go undetected until they need costly intervention.",
+          solution: "Built a wearable Smart PAD with pressure, motion (IMU), and temperature sensors feeding an edge AI core, connected to a full clinical platform with patient, doctor, and hospital portals, live telemetry, and a personal motion baseline that flags micro-deviations early.",
+          tech: ["Next.js", "Firebase", "PostgreSQL (Neon) + Drizzle ORM", "Three.js", "AI Motion Analysis"],
+          impact: "A live prototype platform covering diabetic foot ulcer prevention, elderly fall-risk detection, and stroke-rehab tracking, from the first sensor reading to a clinician-facing alert.",
+          link: "https://project-files-sable.vercel.app"
         }
       ]
     },
@@ -237,7 +238,7 @@ export const translations = {
         "PROJECTS DIRECTORY:",
         "  * CyberMind: Adaptive learning platform simulating AI-driven threats",
         "  * Mu'een: AI vision platform for crowd density analytics and crowd safety",
-        "  * Dithar: IoT wearable health tracking system with vital signs telemetry"
+        "  * Dithar: Smart insole platform for post-discharge patient monitoring"
       ],
       contactResult: [
         "CONTACT INFRASTRUCTURE:",
@@ -303,15 +304,15 @@ export const translations = {
         sectorLabel: "Checkpoint Cam"
       },
       dithar: {
-        title: "Dithar: Pilgrim IoT Vital Telemetry",
-        desc: "Simulate live health status updates from pilgrim wearables. Adjust slider to simulate high temperatures.",
-        tempLabel: "Simulated Ambient Temperature (°C):",
-        heartLabel: "Simulated Heart Rate (BPM):",
-        heatstrokeRisk: "Heat Exhaustion Alert Level:",
-        safeStatus: "Safe System Diagnostics - Normal Telemetry",
-        warningStatus: "Warning Diagnostic - Risk of Heat Stress",
-        dangerStatus: "EMERGENCY ALARM - HIGH HEATSTROKE RISK DETECTED",
-        vitalSigns: "Telemetry vitals feed:"
+        title: "Dithar: Smart PAD Risk Monitor",
+        desc: "Simulate live telemetry from the Smart PAD's pressure and temperature sensors and watch early pressure-injury risk get flagged.",
+        tempLabel: "Simulated Plantar Temperature (°C):",
+        heartLabel: "Simulated Pressure Load (kPa):",
+        heatstrokeRisk: "Pressure Injury Risk Level:",
+        safeStatus: "Normal Diagnostics - No Risk Detected",
+        warningStatus: "Elevated Readings - Monitor Closely",
+        dangerStatus: "HIGH RISK - CLINICAL ALERT TRIGGERED",
+        vitalSigns: "Telemetry feed:"
       }
     }
   },
@@ -418,12 +419,13 @@ export const translations = {
         {
           id: "dithar",
           title: "دثار",
-          tag: "نظام الصحة والسلامة الذكي",
-          description: "نظام متكامل لإنترنت الأشياء (IoT) مصمم خصيصاً لحماية ضيوف الرحمن من خلال رصد درجات الحرارة ونبضات القلب للكشف عن الإجهاد الحراري وضربات الشمس.",
-          problem: "الظروف الجوية الحارة في مواسم الحج تشكل خطورة عالية تتطلب استباقية بالرصد لتجنب حالات الإعياء الحرج.",
-          solution: "بناء نظام بيئي متكامل يشمل مستشعرات ذكية قابلة للارتداء ولوحة تحكم مركزية لمراقبة الحالات الحيوية وعلامات الإجهاد بدقة.",
-          tech: ["IoT Sensors", "Firebase", "React Native", "تحليل البيانات", "التقنيات القابلة للارتداء"],
-          impact: "تفعيل إنذار مبكر للكوادر الطبية قبل تدهور الحالة الحيوية، مما يقلل بشكل ملموس من مخاطر الإجهاد الحراري."
+          tag: "لباد ذكي لمتابعة المرضى بعد الخروج من المستشفى",
+          description: "لباد طبي ذكي (Smart PAD) مرتبط بمنصة سريرية مدعومة بالذكاء الاصطناعي، يراقب باستمرار توزيع الضغط وطريقة المشي والتغيرات الحرارية الدقيقة للمريض بعد خروجه من المستشفى، ليكتشف المضاعفات قبل ظهورها.",
+          problem: "تتوقف متابعة المريض فور خروجه من المستشفى، فتمر علامات مبكرة لتقرحات القدم السكري أو اختلال التوازن أو مضاعفات ما بعد السكتة الدماغية دون رصد حتى تتفاقم وتحتاج تدخلاً مكلفاً.",
+          solution: "بنيت لباداً ذكياً بمستشعرات ضغط وحركة (IMU) وحرارة متصلة بمعالج ذكاء اصطناعي طرفي، ومنصة سريرية كاملة تضم بوابات للمريض والطبيب والمستشفى، وتتبعاً لحظياً، وخط أساس حركي شخصي يكشف أدق الانحرافات مبكراً.",
+          tech: ["Next.js", "Firebase", "PostgreSQL (Neon) + Drizzle ORM", "Three.js", "تحليل الحركة بالذكاء الاصطناعي"],
+          impact: "منصة نموذج أولي فعّالة تغطي الوقاية من تقرحات القدم السكري، وكشف مخاطر سقوط كبار السن، ومتابعة تأهيل السكتات الدماغية، من أول قراءة استشعار حتى تنبيه الطبيب المعالج.",
+          link: "https://project-files-sable.vercel.app"
         }
       ]
     },
@@ -551,7 +553,7 @@ export const translations = {
         "دليل المشاريع النشطة:",
         "  * CyberMind: منصة تعلم تكيفية بالذكاء الاصطناعي لمحاكاة التهديدات",
         "  * معين: استخدام الرؤية الحاسوبية والذكاء الاصطناعي لإدارة الحشود بمواسم الحج",
-        "  * دثار: إنترنت الأشياء والنبضات الحيوية لمراقبة الإجهاد الحراري للحجاج"
+        "  * دثار: منصة لباد ذكي لمتابعة المرضى بعد الخروج من المستشفى"
       ],
       contactResult: [
         "قنوات الاتصال الآمنة:",
@@ -617,15 +619,15 @@ export const translations = {
         sectorLabel: "كاميرا كشف"
       },
       dithar: {
-        title: "دثار: قراءات مستشعرات صحة وسلامة الحجاج",
-        desc: "محاكاة لقراءات حساسات إنترنت الأشياء للحجاج. تحكم بمؤشر درجة الحرارة لترى مستويات الخطر للضربة الشمسية.",
-        tempLabel: "درجة الحرارة المحاكاة للحاج (°م):",
-        heartLabel: "نبضات القلب المحاكاة (نبضة/د):",
-        heatstrokeRisk: "مستوى خطر الإجهاد الحراري والضربة الشمسية:",
-        safeStatus: "المؤشرات سليمة - التشخيص طبيعي وآمن",
-        warningStatus: "تحذير - رصد درجات حرارة مرتفعة وبداية إجهاد",
-        dangerStatus: "إنذار طوارئ حرج - رصد مؤشرات ضربة شمس محتملة!",
-        vitalSigns: "بيانات تتبع العلامات الحيوية الحية:"
+        title: "دثار: مراقبة مخاطر اللباد الذكي",
+        desc: "حاكِ التتبع اللحظي لمستشعرات الضغط والحرارة في اللباد الذكي، وشاهد كيف يُكتشف خطر تقرحات الضغط مبكراً.",
+        tempLabel: "درجة حرارة باطن القدم المحاكاة (°م):",
+        heartLabel: "محاكاة حِمل الضغط (كيلوباسكال):",
+        heatstrokeRisk: "مستوى خطر تقرح الضغط:",
+        safeStatus: "المؤشرات طبيعية - لا يوجد خطر مرصود",
+        warningStatus: "قراءات مرتفعة - يتطلب متابعة دقيقة",
+        dangerStatus: "خطر مرتفع - تم إطلاق تنبيه سريري",
+        vitalSigns: "تدفق بيانات التتبع:"
       }
     }
   }

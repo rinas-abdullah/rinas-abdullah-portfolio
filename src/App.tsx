@@ -29,6 +29,8 @@ import {
   Play,
   CheckCircle2,
   ArrowUpRight,
+  Footprints,
+  Thermometer,
 } from 'lucide-react';
 import { translations } from './translations';
 
@@ -539,21 +541,21 @@ const MueenSimulator = () => {
 
 const DitharSimulator = () => {
   const { lang, t } = useLang();
-  const [ambientTemp, setAmbientTemp] = useState(37.5);
-  const [heartRate, setHeartRate] = useState(82);
+  const [plantarTemp, setPlantarTemp] = useState(33.0);
+  const [pressureLoad, setPressureLoad] = useState(60);
 
   useEffect(() => {
-    setHeartRate(Math.round(75 + (ambientTemp - 36) * 11 + Math.random() * 5));
-  }, [ambientTemp]);
+    setPressureLoad(Math.round(60 + (plantarTemp - 30) * 14 + Math.random() * 8));
+  }, [plantarTemp]);
 
-  const isEmergency = ambientTemp >= 39.5 || heartRate >= 120;
-  const isWarning = !isEmergency && (ambientTemp >= 38.2 || heartRate >= 100);
+  const isEmergency = plantarTemp >= 37.5 || pressureLoad >= 190;
+  const isWarning = !isEmergency && (plantarTemp >= 35.0 || pressureLoad >= 140);
 
   return (
     <div className="glow-card-container bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
       <div className="glow-card-border" />
       <div className="flex items-center gap-3 mb-5">
-        <div className="p-2 rounded-xl bg-emerald-50 text-emerald-600"><Layers size={18} /></div>
+        <div className="p-2 rounded-xl bg-emerald-50 text-emerald-600"><Footprints size={18} /></div>
         <div>
           <h4 className="text-sm font-bold text-slate-900">{t.simulators.dithar.title}</h4>
           <p className="text-[11px] text-slate-500">{t.simulators.dithar.desc}</p>
@@ -577,11 +579,11 @@ const DitharSimulator = () => {
           <div className="space-y-1.5">
             <div className="flex justify-between text-[10px] font-semibold uppercase tracking-wider text-slate-500">
               <span>{t.simulators.dithar.tempLabel}</span>
-              <span className="text-slate-900 font-black">{ambientTemp.toFixed(1)}°C</span>
+              <span className="text-slate-900 font-black">{plantarTemp.toFixed(1)}°C</span>
             </div>
             <input
-              type="range" min="36.0" max="42.5" step="0.1" value={ambientTemp}
-              onChange={(e) => setAmbientTemp(parseFloat(e.target.value))}
+              type="range" min="30.0" max="40.0" step="0.1" value={plantarTemp}
+              onChange={(e) => setPlantarTemp(parseFloat(e.target.value))}
               className="w-full accent-indigo-600 h-1.5 bg-slate-200 rounded-full appearance-none cursor-pointer"
             />
           </div>
@@ -590,23 +592,23 @@ const DitharSimulator = () => {
             <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
               <div>
                 <span className="text-[9px] font-semibold text-slate-400 uppercase block">{t.simulators.dithar.heartLabel}</span>
-                <span className="text-lg font-black text-slate-900 block mt-0.5">{heartRate} <span className="text-xs font-semibold text-slate-400">BPM</span></span>
+                <span className="text-lg font-black text-slate-900 block mt-0.5">{pressureLoad} <span className="text-xs font-semibold text-slate-400">kPa</span></span>
               </div>
               <motion.div
-                animate={{ scale: [1, 1.25, 1] }}
-                transition={{ repeat: Infinity, duration: heartRate > 120 ? 0.35 : heartRate > 100 ? 0.55 : 0.85, ease: "easeInOut" }}
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ repeat: Infinity, duration: isEmergency ? 0.4 : isWarning ? 0.6 : 0.9, ease: "easeInOut" }}
                 className={`w-8 h-8 rounded-full flex items-center justify-center ${isEmergency ? 'bg-red-100 text-red-500' : isWarning ? 'bg-amber-100 text-amber-500' : 'bg-emerald-100 text-emerald-500'}`}
               >
-                <Heart size={15} fill="currentColor" />
+                <Activity size={15} />
               </motion.div>
             </div>
             <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
               <div>
                 <span className="text-[9px] font-semibold text-slate-400 uppercase block">{lang === 'en' ? 'Temp' : 'الحرارة'}</span>
-                <span className="text-lg font-black text-slate-900 block mt-0.5">{ambientTemp.toFixed(1)}<span className="text-xs font-semibold text-slate-400">°C</span></span>
+                <span className="text-lg font-black text-slate-900 block mt-0.5">{plantarTemp.toFixed(1)}<span className="text-xs font-semibold text-slate-400">°C</span></span>
               </div>
               <div className={`w-8 h-8 rounded-full flex items-center justify-center ${isEmergency ? 'bg-red-100 text-red-500' : isWarning ? 'bg-amber-100 text-amber-500' : 'bg-indigo-100 text-indigo-500'}`}>
-                <Activity size={15} className={isEmergency ? 'animate-pulse' : ''} />
+                <Thermometer size={15} className={isEmergency ? 'animate-pulse' : ''} />
               </div>
             </div>
           </div>
@@ -893,9 +895,22 @@ const Projects = () => {
                     </span>
                     <h3 className="text-3xl font-black text-slate-900 tracking-tight">{project.title}</h3>
                   </div>
-                  <Tag color={project.id === 'cybermind' ? 'indigo' : project.id === 'mueen' ? 'violet' : 'emerald'}>
-                    {lang === 'en' ? 'Case Study' : 'دراسة حالة'}
-                  </Tag>
+                  <div className="flex items-center gap-2 shrink-0">
+                    {project.link && (
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-2.5 py-1 rounded-md text-[10px] font-mono font-semibold uppercase tracking-wider border bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100 transition-colors flex items-center gap-1"
+                      >
+                        {t.projects.caseStudy.visit}
+                        <ExternalLink size={11} />
+                      </a>
+                    )}
+                    <Tag color={project.id === 'cybermind' ? 'indigo' : project.id === 'mueen' ? 'violet' : 'emerald'}>
+                      {lang === 'en' ? 'Case Study' : 'دراسة حالة'}
+                    </Tag>
+                  </div>
                 </div>
 
                 <p className="text-[15px] text-slate-600 leading-relaxed mb-6">{project.description}</p>
