@@ -28,11 +28,6 @@ export const translations = {
       cta_contact: "Let’s Connect",
       description: "First Class Honors cybersecurity architect and AI innovation leader founding and building Dithar, a healthcare AI platform, while shipping immersive, high-end digital experiences that blend security, intelligence, and cinematic UI/UX."
     },
-    signature: {
-      title: "Where Security Meets Intelligence",
-      caption: "An interactive core — drag to rotate.",
-      hint: "// drag to explore"
-    },
     about: {
       title: "Cybersecurity & Creative Web Systems",
       p1: "Cybersecurity and AI-driven systems developer with First Class Honors from King Abdulaziz University. Founder & CEO of Dithar, an AI-powered healthcare platform, and a multi-hackathon winner recognized for shipping enterprise-grade prototypes in 24-48 hour sprints. I specialize in secure system design, vulnerability assessment, AI-powered platforms, and modern web experiences that feel premium and futuristic.",
@@ -376,11 +371,6 @@ export const translations = {
       cta_projects: "تصفح الأعمال",
       cta_contact: "تواصل الآن",
       description: "مهندسة أمن سيبراني وقائدة ابتكار في الذكاء الاصطناعي بتقدير ممتاز مع مرتبة الشرف الأولى من جامعة الملك عبدالعزيز، مؤسِّسة ورئيسة تنفيذية لمنصة دثار الصحية الذكية، إلى جانب بناء تجارب ويب مستقبلية تجمع بين الحماية الفائقة، والذكاء البرمجي، والتصميم البصري الفاخر."
-    },
-    signature: {
-      title: "حيث يلتقي الأمن بالذكاء",
-      caption: "نواة تفاعلية — اسحبي لتدويرها.",
-      hint: "// اسحبي للاستكشاف"
     },
     about: {
       title: "الأمن السيبراني والتقنيات الحديثة",

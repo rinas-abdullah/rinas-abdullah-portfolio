@@ -16,7 +16,7 @@
 
   body {
     @apply min-h-screen bg-white text-slate-900 antialiased overflow-x-hidden;
-    @apply selection:bg-violet-100 selection:text-violet-900;
+    @apply selection:bg-blue-100 selection:text-blue-900;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
@@ -34,7 +34,7 @@
 
 /* Terminal — dark terminal on light page is intentional and looks pro */
 .terminal-input-prefix {
-  @apply text-emerald-400 font-mono font-bold select-none text-[11px];
+  @apply text-blue-400 font-mono font-bold select-none text-[11px];
 }
 
 @keyframes terminal-cursor-blink {
@@ -46,7 +46,7 @@
   display: inline-block;
   width: 7px;
   height: 13px;
-  background-color: #a3e635;
+  background-color: #3b82f6;
   animation: terminal-cursor-blink 1s step-end infinite;
   vertical-align: middle;
   margin-left: 3px;
@@ -54,7 +54,7 @@
 
 /* Timeline node */
 .timeline-pulse-node {
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
   animation: node-pulse 3s ease-in-out infinite;
 }
 
@@ -85,7 +85,7 @@
   inset: 0;
   background: radial-gradient(
     600px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
-    rgba(99, 102, 241, 0.055),
+    rgba(37, 99, 235, 0.055),
     transparent 40%
   );
   z-index: 1;
@@ -105,7 +105,7 @@
   padding: 1px;
   background: radial-gradient(
     350px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
-    rgba(99, 102, 241, 0.35),
+    rgba(37, 99, 235, 0.35),
     transparent 40%
   );
   z-index: 2;
@@ -154,9 +154,9 @@ body.has-custom-cursor [role="button"] {
   position: fixed;
   top: 0; left: 0;
   width: 20px; height: 20px;
-  border: 1.5px solid rgba(99, 102, 241, 0.5);
+  border: 1.5px solid rgba(37, 99, 235, 0.5);
   border-radius: 50%;
-  background: rgba(99, 102, 241, 0.04);
+  background: rgba(37, 99, 235, 0.04);
   pointer-events: none;
   z-index: 99999;
   transform: translate(-50%, -50%);
@@ -167,7 +167,7 @@ body.has-custom-cursor [role="button"] {
   position: fixed;
   top: 0; left: 0;
   width: 4px; height: 4px;
-  background: #6366f1;
+  background: #3b82f6;
   border-radius: 50%;
   pointer-events: none;
   z-index: 99999;
@@ -176,16 +176,16 @@ body.has-custom-cursor [role="button"] {
 
 .cursor-hover .custom-cursor {
   width: 38px; height: 38px;
-  border-color: rgba(99, 102, 241, 0.8);
-  background: rgba(99, 102, 241, 0.08);
+  border-color: rgba(37, 99, 235, 0.8);
+  background: rgba(37, 99, 235, 0.08);
 }
 .cursor-hover .custom-cursor-inner {
-  background: #4f46e5;
+  background: #2563eb;
   width: 5px; height: 5px;
 }
 .cursor-active .custom-cursor {
   width: 14px; height: 14px;
-  background: rgba(99, 102, 241, 0.18);
+  background: rgba(37, 99, 235, 0.18);
 }
 
 /* Floating animation for subtle bg blobs */
@@ -219,7 +219,7 @@ body.has-custom-cursor [role="button"] {
   display: inline-block;
   width: 2px;
   height: 1.1em;
-  background-color: #6366f1;
+  background-color: #3b82f6;
   animation: terminal-cursor-blink 1s step-end infinite;
   vertical-align: text-bottom;
   margin-left: 2px;

@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, useContext, useRef, Suspense, lazy } from 'react';
+import { useState, useEffect, createContext, useContext, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Shield,
@@ -34,8 +34,6 @@ import {
   Gem,
 } from 'lucide-react';
 import { translations } from './translations';
-
-const HeroScene = lazy(() => import('./components/HeroScene'));
 
 // --- Context & Hooks ---
 type Language = 'en' | 'ar';
@@ -80,16 +78,9 @@ const useTypewriter = (words: string[], speed = 80, delay = 2500) => {
 
 // --- UI Primitives ---
 
-const Tag = ({ children, color = "indigo" }: { children: React.ReactNode; color?: "indigo" | "violet" | "emerald" | "rose" | "amber" }) => {
-  const styles = {
-    indigo: "bg-indigo-50 text-indigo-700 border-indigo-200",
-    violet: "bg-violet-50 text-violet-700 border-violet-200",
-    emerald: "bg-emerald-50 text-emerald-700 border-emerald-200",
-    rose: "bg-rose-50 text-rose-700 border-rose-200",
-    amber: "bg-amber-50 text-amber-700 border-amber-200",
-  };
+const Tag = ({ children }: { children: React.ReactNode; color?: "indigo" | "violet" | "emerald" | "rose" | "amber" }) => {
   return (
-    <span className={`px-2.5 py-1 rounded-md text-[10px] font-mono font-semibold uppercase tracking-wider border ${styles[color]}`}>
+    <span className="px-2.5 py-1 rounded-md text-[10px] font-mono font-semibold uppercase tracking-wider border bg-blue-50 text-blue-700 border-blue-200">
       {children}
     </span>
   );
@@ -100,8 +91,8 @@ const Tag = ({ children, color = "indigo" }: { children: React.ReactNode; color?
 const BackgroundEffects = () => (
   <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
     <div className="absolute inset-0 bg-dot-grid opacity-100" />
-    <div className="absolute top-[-20%] right-[-10%] w-[60rem] h-[60rem] rounded-full bg-indigo-100/50 blur-[160px] animate-float-slow" />
-    <div className="absolute bottom-[-10%] left-[-5%] w-[45rem] h-[45rem] rounded-full bg-violet-100/40 blur-[140px] animate-float-slow-alt" />
+    <div className="absolute top-[-20%] right-[-10%] w-[60rem] h-[60rem] rounded-full bg-blue-100/50 blur-[160px] animate-float-slow" />
+    <div className="absolute bottom-[-10%] left-[-5%] w-[45rem] h-[45rem] rounded-full bg-blue-200/40 blur-[140px] animate-float-slow-alt" />
   </div>
 );
 
@@ -181,7 +172,7 @@ const Navbar = () => {
           animate={{ opacity: 1, x: 0 }}
           className="flex items-center gap-2.5 group cursor-pointer"
         >
-          <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center shadow-sm group-hover:bg-indigo-700 transition-colors">
+          <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center shadow-sm group-hover:bg-blue-700 transition-colors">
             <span className="text-white font-heading font-black text-sm">R</span>
           </div>
           <span className="text-sm font-heading font-bold text-slate-900 tracking-tight hidden sm:block">
@@ -219,7 +210,7 @@ const Navbar = () => {
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? (lang === 'en' ? 'Close menu' : 'إغلاق القائمة') : (lang === 'en' ? 'Open menu' : 'فتح القائمة')}
-            className="text-slate-900 hover:text-indigo-600 transition-colors p-1"
+            className="text-slate-900 hover:text-blue-600 transition-colors p-1"
           >
             {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
@@ -240,7 +231,7 @@ const Navbar = () => {
                   key={link.name}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-sm font-medium text-slate-700 hover:text-indigo-600 py-2.5 border-b border-slate-100 last:border-0 transition-colors"
+                  className="text-sm font-medium text-slate-700 hover:text-blue-600 py-2.5 border-b border-slate-100 last:border-0 transition-colors"
                 >
                   {link.name}
                 </a>
@@ -377,7 +368,7 @@ const CyberMindSimulator = () => {
     <div className="glow-card-container bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
       <div className="glow-card-border" />
       <div className="flex items-center gap-3 mb-5">
-        <div className="p-2 rounded-xl bg-indigo-50 text-indigo-600">
+        <div className="p-2 rounded-xl bg-blue-50 text-blue-600">
           <Shield size={18} />
         </div>
         <div>
@@ -399,8 +390,8 @@ const CyberMindSimulator = () => {
                 disabled={simulating}
                 className={`px-2.5 py-2 rounded-lg text-[10px] font-semibold border transition-all cursor-pointer ${
                   selectedAttack === id
-                    ? 'bg-indigo-600 border-indigo-600 text-white shadow-sm'
-                    : 'bg-slate-50 border-slate-200 text-slate-600 hover:border-indigo-300 hover:text-indigo-700'
+                    ? 'bg-blue-600 border-blue-600 text-white shadow-sm'
+                    : 'bg-slate-50 border-slate-200 text-slate-600 hover:border-blue-300 hover:text-blue-700'
                 }`}
               >
                 {id === 'phishing' ? t.simulators.cybermind.phishing : id === 'ransomware' ? t.simulators.cybermind.ransomware : t.simulators.cybermind.sqli}
@@ -412,7 +403,7 @@ const CyberMindSimulator = () => {
         <button
           onClick={handleSimulate}
           disabled={simulating}
-          className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-semibold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm"
+          className="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-semibold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm"
         >
           {simulating ? <RefreshCw size={13} className="animate-spin" /> : <Play size={13} />}
           {simulating ? t.simulators.cybermind.btnSimulating : t.simulators.cybermind.btnSimulate}
@@ -473,7 +464,7 @@ const MueenSimulator = () => {
     <div className="glow-card-container bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
       <div className="glow-card-border" />
       <div className="flex items-center gap-3 mb-5">
-        <div className="p-2 rounded-xl bg-violet-50 text-violet-600"><Cpu size={18} /></div>
+        <div className="p-2 rounded-xl bg-blue-50 text-blue-600"><Cpu size={18} /></div>
         <div>
           <h4 className="text-sm font-bold text-slate-900">{t.simulators.mueen.title}</h4>
           <p className="text-[11px] text-slate-500">{t.simulators.mueen.desc}</p>
@@ -486,7 +477,7 @@ const MueenSimulator = () => {
             <span className="text-[9px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">{t.simulators.mueen.densityLevel}</span>
             <div className="text-2xl font-black text-slate-900">{avg}%</div>
             <div className="mt-2 h-1 w-full bg-slate-200 rounded-full overflow-hidden">
-              <div className="h-full bg-indigo-500 transition-all duration-500 rounded-full" style={{ width: `${avg}%` }} />
+              <div className="h-full bg-blue-500 transition-all duration-500 rounded-full" style={{ width: `${avg}%` }} />
             </div>
           </div>
           <div className={`p-4 rounded-xl border text-center transition-all flex flex-col justify-center items-center ${
@@ -516,11 +507,11 @@ const MueenSimulator = () => {
                   className={`p-3 rounded-xl border cursor-pointer select-none transition-all flex flex-col justify-between h-20 ${
                     status === 'danger' ? 'bg-red-50 border-red-200 hover:border-red-400'
                       : status === 'warning' ? 'bg-amber-50 border-amber-200 hover:border-amber-400'
-                      : 'bg-slate-50 border-slate-200 hover:border-indigo-300'
+                      : 'bg-slate-50 border-slate-200 hover:border-blue-300'
                   }`}
                 >
                   <div className="flex items-center justify-between text-[8px] font-semibold uppercase">
-                    <span className={status === 'danger' ? 'text-red-500' : status === 'warning' ? 'text-amber-500' : 'text-indigo-500'}>
+                    <span className={status === 'danger' ? 'text-red-500' : status === 'warning' ? 'text-amber-500' : 'text-blue-500'}>
                       {t.simulators.mueen.sectorLabel} 0{sec.id}
                     </span>
                     <span className={`w-1.5 h-1.5 rounded-full ${status === 'danger' ? 'bg-red-500' : status === 'warning' ? 'bg-amber-500' : 'bg-emerald-500'}`} />
@@ -528,7 +519,7 @@ const MueenSimulator = () => {
                   <div className="text-[10px] font-bold text-slate-900 truncate">{sec.name}</div>
                   <div className="flex items-center gap-1.5">
                     <div className="flex-1 h-1 bg-slate-200 rounded-full overflow-hidden">
-                      <div className={`h-full transition-all duration-300 rounded-full ${status === 'danger' ? 'bg-red-500' : status === 'warning' ? 'bg-amber-500' : 'bg-indigo-500'}`} style={{ width: `${sec.count}%` }} />
+                      <div className={`h-full transition-all duration-300 rounded-full ${status === 'danger' ? 'bg-red-500' : status === 'warning' ? 'bg-amber-500' : 'bg-blue-500'}`} style={{ width: `${sec.count}%` }} />
                     </div>
                     <span className="text-[9px] font-bold text-slate-600">{sec.count}%</span>
                   </div>
@@ -558,7 +549,7 @@ const DitharSimulator = () => {
     <div className="glow-card-container bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
       <div className="glow-card-border" />
       <div className="flex items-center gap-3 mb-5">
-        <div className="p-2 rounded-xl bg-emerald-50 text-emerald-600"><Footprints size={18} /></div>
+        <div className="p-2 rounded-xl bg-blue-50 text-blue-600"><Footprints size={18} /></div>
         <div>
           <h4 className="text-sm font-bold text-slate-900">{t.simulators.dithar.title}</h4>
           <p className="text-[11px] text-slate-500">{t.simulators.dithar.desc}</p>
@@ -587,7 +578,7 @@ const DitharSimulator = () => {
             <input
               type="range" min="30.0" max="40.0" step="0.1" value={plantarTemp}
               onChange={(e) => setPlantarTemp(parseFloat(e.target.value))}
-              className="w-full accent-indigo-600 h-1.5 bg-slate-200 rounded-full appearance-none cursor-pointer"
+              className="w-full accent-blue-600 h-1.5 bg-slate-200 rounded-full appearance-none cursor-pointer"
             />
           </div>
 
@@ -610,7 +601,7 @@ const DitharSimulator = () => {
                 <span className="text-[9px] font-semibold text-slate-400 uppercase block">{lang === 'en' ? 'Temp' : 'الحرارة'}</span>
                 <span className="text-lg font-black text-slate-900 block mt-0.5">{plantarTemp.toFixed(1)}<span className="text-xs font-semibold text-slate-400">°C</span></span>
               </div>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${isEmergency ? 'bg-red-100 text-red-500' : isWarning ? 'bg-amber-100 text-amber-500' : 'bg-indigo-100 text-indigo-500'}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${isEmergency ? 'bg-red-100 text-red-500' : isWarning ? 'bg-amber-100 text-amber-500' : 'bg-blue-100 text-blue-500'}`}>
                 <Thermometer size={15} className={isEmergency ? 'animate-pulse' : ''} />
               </div>
             </div>
@@ -640,15 +631,15 @@ const LaVieSimulator = () => {
       <div className="glow-card-border" />
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-rose-50 text-rose-600"><Gem size={18} /></div>
+          <div className="p-2 rounded-xl bg-blue-50 text-blue-600"><Gem size={18} /></div>
           <div>
             <h4 className="text-sm font-bold text-slate-900">{t.simulators.lavieahd.title}</h4>
             <p className="text-[11px] text-slate-500">{t.simulators.lavieahd.desc}</p>
           </div>
         </div>
-        <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-rose-50 border border-rose-100 shrink-0">
-          <Heart size={12} className="text-rose-500" fill={wishlist.length > 0 ? 'currentColor' : 'none'} />
-          <span className="text-[11px] font-bold text-rose-700">{t.simulators.lavieahd.wishlistLabel} ({wishlist.length})</span>
+        <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-blue-50 border border-blue-100 shrink-0">
+          <Heart size={12} className="text-blue-500" fill={wishlist.length > 0 ? 'currentColor' : 'none'} />
+          <span className="text-[11px] font-bold text-blue-700">{t.simulators.lavieahd.wishlistLabel} ({wishlist.length})</span>
         </div>
       </div>
 
@@ -659,7 +650,7 @@ const LaVieSimulator = () => {
           return (
             <div key={product.id} className="rounded-xl border border-slate-200 bg-slate-50 p-3 flex flex-col gap-2">
               <div className="flex items-start justify-between">
-                <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-wide ${soldOut ? 'bg-slate-200 text-slate-500' : 'bg-emerald-100 text-emerald-700'}`}>
+                <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-wide ${soldOut ? 'bg-slate-200 text-slate-500' : 'bg-blue-100 text-blue-700'}`}>
                   {soldOut ? t.simulators.lavieahd.outOfStockBadge : t.simulators.lavieahd.newBadge}
                 </span>
                 <button
@@ -667,17 +658,17 @@ const LaVieSimulator = () => {
                   aria-label={t.simulators.lavieahd.saveLabel}
                   className="cursor-pointer"
                 >
-                  <Heart size={14} className={saved ? 'text-rose-500' : 'text-slate-300'} fill={saved ? 'currentColor' : 'none'} />
+                  <Heart size={14} className={saved ? 'text-blue-500' : 'text-slate-300'} fill={saved ? 'currentColor' : 'none'} />
                 </button>
               </div>
-              <div className="w-full aspect-square rounded-lg bg-gradient-to-br from-rose-100 to-amber-50 flex items-center justify-center">
-                <Gem size={22} className="text-rose-300" />
+              <div className="w-full aspect-square rounded-lg bg-gradient-to-br from-blue-100 to-slate-50 flex items-center justify-center">
+                <Gem size={22} className="text-blue-300" />
               </div>
               <div className="text-[10px] font-semibold text-slate-800 leading-snug">{product.name[lang]}</div>
               <div className="text-[11px] font-black text-slate-900">
                 {product.price} {lang === 'en' ? 'SAR' : 'ر.س'}
               </div>
-              <div className="text-[9px] font-semibold text-rose-500">
+              <div className="text-[9px] font-semibold text-blue-500">
                 {saved ? t.simulators.lavieahd.savedLabel : ''}
               </div>
             </div>
@@ -687,8 +678,6 @@ const LaVieSimulator = () => {
     </div>
   );
 };
-
-// --- Section Header ---
 
 // --- Scroll Storytelling ---
 
@@ -721,13 +710,13 @@ const SectionHeader = ({ number, title, subtitle }: { number: string; title: str
   return (
     <Reveal className="mb-14">
       <div className="flex items-center gap-3 mb-3">
-        <span className="text-[11px] font-mono font-semibold text-indigo-500 tracking-wider">{number}</span>
+        <span className="text-[11px] font-mono font-semibold text-blue-500 tracking-wider">{number}</span>
         <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: 32 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.15 }}
-          className="h-px bg-indigo-200"
+          className="h-px bg-blue-200"
         />
       </div>
       <h2 className="text-4xl md:text-5xl font-heading font-black text-slate-900 tracking-tight mb-3">
@@ -759,8 +748,8 @@ const Hero = () => {
           transition={{ duration: 0.7 }}
           className="space-y-6 max-w-xl"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-semibold">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-[11px] font-semibold">
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
             {lang === 'en' ? 'Available for opportunities' : 'متاحة للفرص'}
           </div>
 
@@ -769,7 +758,7 @@ const Hero = () => {
           </h1>
 
           <div className="flex items-center gap-1.5 h-8">
-            <span className="text-lg md:text-xl font-mono font-semibold text-indigo-600">
+            <span className="text-lg md:text-xl font-mono font-semibold text-blue-600">
               {typedTitle}
             </span>
             <span className="hero-cursor" />
@@ -782,7 +771,7 @@ const Hero = () => {
           <div className="flex flex-wrap gap-3 pt-2">
             <a
               href="#projects"
-              className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm flex items-center gap-2 transition-colors shadow-sm cursor-pointer"
+              className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm flex items-center gap-2 transition-colors shadow-sm cursor-pointer"
             >
               {t.hero.cta_projects}
               <ArrowUpRight size={14} />
@@ -825,52 +814,6 @@ const Hero = () => {
   );
 };
 
-// --- Signature 3D ---
-
-const Signature = () => {
-  const { t } = useLang();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [shouldLoad, setShouldLoad] = useState(false);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setShouldLoad(true); observer.disconnect(); } },
-      { rootMargin: '400px' }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <section className="py-16 px-6 relative overflow-hidden">
-      <div className="max-w-4xl mx-auto text-center">
-        <Reveal>
-          <h3 className="text-xl md:text-2xl font-heading font-bold text-slate-900 tracking-tight mb-2">
-            {t.signature.title}
-          </h3>
-          <p className="text-slate-500 text-sm max-w-lg mx-auto mb-2">{t.signature.caption}</p>
-        </Reveal>
-        <Reveal delay={0.15}>
-          <div ref={containerRef}>
-            {shouldLoad ? (
-              <Suspense
-                fallback={<div className="w-full h-[320px] sm:h-[420px] flex items-center justify-center text-slate-300 text-xs font-mono">// loading core...</div>}
-              >
-                <HeroScene />
-              </Suspense>
-            ) : (
-              <div className="w-full h-[320px] sm:h-[420px]" />
-            )}
-          </div>
-          <p className="text-[11px] font-mono text-slate-400 mt-1">{t.signature.hint}</p>
-        </Reveal>
-      </div>
-    </section>
-  );
-};
-
 // --- About ---
 
 const About = () => {
@@ -890,7 +833,7 @@ const About = () => {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <Reveal x={-28} y={0} className="space-y-5">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-indigo-50 text-indigo-600"><User size={18} /></div>
+              <div className="p-2 rounded-xl bg-blue-50 text-blue-600"><User size={18} /></div>
               <h3 className="text-lg font-bold text-slate-900">{t.about.title}</h3>
             </div>
             <div className="space-y-4 text-[15px] text-slate-600 leading-relaxed">
@@ -900,7 +843,7 @@ const About = () => {
             </div>
             <div className="flex flex-wrap gap-2 pt-2">
               {t.about.interests.map((interest: string) => (
-                <span key={interest} className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 text-[11px] font-medium border border-slate-200 hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-200 transition-colors">
+                <span key={interest} className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 text-[11px] font-medium border border-slate-200 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 transition-colors">
                   {interest}
                 </span>
               ))}
@@ -909,12 +852,12 @@ const About = () => {
 
           <div className="grid grid-cols-2 gap-4 items-start">
             {[
-              { icon: <Shield size={24} />, label: lang === 'en' ? "Security & GRC" : "الأمن والحوكمة", desc: lang === 'en' ? "Vulnerability audit & standards" : "تدقيق الثغرات والمعايير", color: "indigo" },
-              { icon: <Cpu size={24} />, label: lang === 'en' ? "AI Systems" : "نظم الذكاء الاصطناعي", desc: lang === 'en' ? "Adaptive learning & analytics" : "التعلم التكيفي والتحليلات", color: "violet" },
-              { icon: <Palette size={24} />, label: lang === 'en' ? "Creative UX/UI" : "UX/UI الإبداعي", desc: lang === 'en' ? "Interactive mockups & code" : "نماذج تفاعلية وكود", color: "emerald" },
-              { icon: <Code2 size={24} />, label: lang === 'en' ? "System Architect" : "مهندسة أنظمة", desc: lang === 'en' ? "Secure fullstack codebases" : "أنظمة متكاملة وآمنة", color: "amber" }
+              { icon: <Shield size={24} />, label: lang === 'en' ? "Security & GRC" : "الأمن والحوكمة", desc: lang === 'en' ? "Vulnerability audit & standards" : "تدقيق الثغرات والمعايير" },
+              { icon: <Cpu size={24} />, label: lang === 'en' ? "AI Systems" : "نظم الذكاء الاصطناعي", desc: lang === 'en' ? "Adaptive learning & analytics" : "التعلم التكيفي والتحليلات" },
+              { icon: <Palette size={24} />, label: lang === 'en' ? "Creative UX/UI" : "UX/UI الإبداعي", desc: lang === 'en' ? "Interactive mockups & code" : "نماذج تفاعلية وكود" },
+              { icon: <Code2 size={24} />, label: lang === 'en' ? "System Architect" : "مهندسة أنظمة", desc: lang === 'en' ? "Secure fullstack codebases" : "أنظمة متكاملة وآمنة" }
             ].map((card, i) => {
-              const accent = card.color === 'indigo' ? 'bg-indigo-50 text-indigo-600 border-indigo-200/60' : card.color === 'violet' ? 'bg-violet-50 text-violet-600 border-violet-200/60' : card.color === 'emerald' ? 'bg-emerald-50 text-emerald-600 border-emerald-200/60' : 'bg-amber-50 text-amber-600 border-amber-200/60';
+              const accent = i % 2 === 0 ? 'bg-blue-50 text-blue-600 border-blue-200/60' : 'bg-slate-100 text-slate-700 border-slate-200';
               return (
                 <Reveal key={i} delay={i * 0.1} className={i % 2 === 1 ? 'sm:mt-8' : ''}>
                   <div
@@ -950,21 +893,15 @@ const Skills = () => {
   };
 
   const skillGroups = [
-    { title: t.skills.cyber.title, items: t.skills.cyber.items, icon: <Shield size={16} />, color: "indigo" },
-    { title: t.skills.ai.title, items: t.skills.ai.items, icon: <Cpu size={16} />, color: "violet" },
-    { title: t.skills.systems.title, items: t.skills.systems.items, icon: <Terminal size={16} />, color: "rose" },
-    { title: t.skills.dev.title, items: t.skills.dev.items, icon: <Code2 size={16} />, color: "emerald" },
-    { title: t.skills.design.title, items: t.skills.design.items, icon: <Palette size={16} />, color: "amber" },
-    { title: t.skills.data.title, items: t.skills.data.items, icon: <Database size={16} />, color: "indigo" }
+    { title: t.skills.cyber.title, items: t.skills.cyber.items, icon: <Shield size={16} /> },
+    { title: t.skills.ai.title, items: t.skills.ai.items, icon: <Cpu size={16} /> },
+    { title: t.skills.systems.title, items: t.skills.systems.items, icon: <Terminal size={16} /> },
+    { title: t.skills.dev.title, items: t.skills.dev.items, icon: <Code2 size={16} /> },
+    { title: t.skills.design.title, items: t.skills.design.items, icon: <Palette size={16} /> },
+    { title: t.skills.data.title, items: t.skills.data.items, icon: <Database size={16} /> }
   ];
 
-  const accentMap: Record<string, string> = {
-    indigo: 'bg-indigo-50 text-indigo-600 border-indigo-100',
-    violet: 'bg-violet-50 text-violet-600 border-violet-100',
-    emerald: 'bg-emerald-50 text-emerald-600 border-emerald-100',
-    amber: 'bg-amber-50 text-amber-600 border-amber-100',
-    rose: 'bg-rose-50 text-rose-600 border-rose-100',
-  };
+  const accents = ['bg-blue-50 text-blue-600 border-blue-100', 'bg-slate-100 text-slate-700 border-slate-200'];
 
   return (
     <section id="skills" className="py-24 px-6 bg-slate-50">
@@ -980,7 +917,7 @@ const Skills = () => {
               >
                 <div className="glow-card-border" />
                 <div className="flex items-center gap-2.5 mb-5">
-                  <div className={`p-1.5 rounded-lg border ${accentMap[group.color]}`}>
+                  <div className={`p-1.5 rounded-lg border ${accents[i % 2]}`}>
                     {group.icon}
                   </div>
                   <h3 className="text-sm font-bold text-slate-900">{group.title}</h3>
@@ -989,7 +926,7 @@ const Skills = () => {
                   {group.items.map((skill: string) => (
                     <span
                       key={skill}
-                      className="px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200 text-slate-600 text-[11px] font-medium hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-200 transition-colors cursor-default"
+                      className="px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200 text-slate-600 text-[11px] font-medium hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 transition-colors cursor-default"
                     >
                       {skill}
                     </span>
@@ -1021,7 +958,7 @@ const Projects = () => {
         <div>
           <SectionHeader number="03." title={t.projects.title} />
           <div className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-white border border-slate-200 shadow-sm">
-            <div className="w-7 h-7 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600">
+            <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
               <Sliders size={14} />
             </div>
             <div>
@@ -1032,102 +969,91 @@ const Projects = () => {
           </div>
         </div>
 
-        <div className="space-y-24">
+        <div className="space-y-28">
           {t.projects.items.map((project: any, i: number) => {
             const isEven = i % 2 === 0;
             return (
-            <div key={project.id} className={`relative grid lg:grid-cols-[1.1fr_0.9fr] gap-8 items-start ${isEven ? '' : 'lg:mt-12'}`}>
+            <div key={project.id} className="relative">
               <span
                 aria-hidden="true"
-                className={`hidden lg:block absolute -top-10 text-8xl font-heading font-black text-slate-100 select-none pointer-events-none ${isEven ? 'left-0' : 'right-0'}`}
+                className={`hidden lg:block absolute -top-14 text-9xl font-heading font-black text-slate-100 select-none pointer-events-none ${isEven ? 'left-0' : 'right-0'}`}
               >
                 0{i + 1}
               </span>
-              <Reveal
-                x={isEven ? -28 : 28}
-                y={0}
-                className={isEven ? 'order-1' : 'order-1 lg:order-2'}
-              >
-              <div
-                onMouseMove={handleMouseMove}
-                className="glow-card-container p-8 rounded-2xl bg-white border border-slate-200 shadow-sm"
-              >
-                <div className="glow-card-border" />
-                <div className="flex flex-col sm:flex-row justify-between sm:items-start gap-4 mb-6">
-                  <div>
-                    <span className="text-[11px] font-mono font-semibold text-indigo-500 uppercase tracking-wider block mb-1">
-                      {project.tag}
-                    </span>
-                    <h3 className="text-3xl font-black text-slate-900 tracking-tight">{project.title}</h3>
-                  </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    {project.link && (
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-2.5 py-1 rounded-md text-[10px] font-mono font-semibold uppercase tracking-wider border bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100 transition-colors flex items-center gap-1"
-                      >
-                        {t.projects.caseStudy.visit}
-                        <ExternalLink size={11} />
-                      </a>
-                    )}
-                    <Tag color={project.id === 'cybermind' ? 'indigo' : project.id === 'mueen' ? 'violet' : project.id === 'lavieahd' ? 'rose' : 'emerald'}>
-                      {lang === 'en' ? 'Case Study' : 'دراسة حالة'}
-                    </Tag>
-                  </div>
-                </div>
 
-                <p className="text-[15px] text-slate-600 leading-relaxed mb-6">{project.description}</p>
-
-                <div className="grid sm:grid-cols-2 gap-4 mb-6">
-                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-2">
-                      {t.projects.caseStudy.problem}
-                    </div>
-                    <p className="text-[13px] text-slate-600 leading-relaxed">{project.problem}</p>
-                  </div>
-                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-2">
-                      {t.projects.caseStudy.solution}
-                    </div>
-                    <p className="text-[13px] text-slate-600 leading-relaxed">{project.solution}</p>
-                  </div>
+              <Reveal className={`flex flex-col sm:flex-row justify-between sm:items-end gap-4 mb-8 ${isEven ? '' : 'sm:flex-row-reverse sm:text-right'}`}>
+                <div>
+                  <span className="text-[11px] font-mono font-semibold text-blue-500 uppercase tracking-wider block mb-1">
+                    {project.tag}
+                  </span>
+                  <h3 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">{project.title}</h3>
                 </div>
-
-                <div className="space-y-4">
-                  <div>
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-2 block">
-                      {t.projects.caseStudy.tech}
-                    </span>
-                    <div className="flex flex-wrap gap-1.5">
-                      {project.tech.map((skill: string) => (
-                        <span key={skill} className="px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 text-[11px] font-medium border border-indigo-100">
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200">
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-emerald-600 mb-1 block">
-                      {t.projects.caseStudy.impact}
-                    </span>
-                    <p className="text-[13px] text-emerald-900 font-semibold">{project.impact}</p>
-                  </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  {project.link && (
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-2.5 py-1 rounded-md text-[10px] font-mono font-semibold uppercase tracking-wider border bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 transition-colors flex items-center gap-1"
+                    >
+                      {t.projects.caseStudy.visit}
+                      <ExternalLink size={11} />
+                    </a>
+                  )}
+                  <Tag>{lang === 'en' ? 'Case Study' : 'دراسة حالة'}</Tag>
                 </div>
-              </div>
               </Reveal>
 
-              <Reveal
-                x={isEven ? 28 : -28}
-                y={0}
-                delay={0.1}
-                className={`lg:sticky lg:top-24 ${isEven ? 'order-2' : 'order-2 lg:order-1'}`}
-              >
+              <Reveal delay={0.1} y={40} className="mb-8">
                 {project.id === 'cybermind' && <CyberMindSimulator />}
                 {project.id === 'mueen' && <MueenSimulator />}
                 {project.id === 'dithar' && <DitharSimulator />}
                 {project.id === 'lavieahd' && <LaVieSimulator />}
+              </Reveal>
+
+              <Reveal delay={0.15}>
+                <p className={`text-[16px] text-slate-600 leading-relaxed mb-8 max-w-3xl ${isEven ? '' : 'ms-auto'}`}>{project.description}</p>
+              </Reveal>
+
+              <Reveal delay={0.2}>
+                <div
+                  onMouseMove={handleMouseMove}
+                  className="glow-card-container p-6 rounded-2xl bg-white border border-slate-200 shadow-sm"
+                >
+                  <div className="glow-card-border" />
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div>
+                      <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-2">
+                        {t.projects.caseStudy.problem}
+                      </div>
+                      <p className="text-[13px] text-slate-600 leading-relaxed">{project.problem}</p>
+                    </div>
+                    <div>
+                      <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-2">
+                        {t.projects.caseStudy.solution}
+                      </div>
+                      <p className="text-[13px] text-slate-600 leading-relaxed">{project.solution}</p>
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-2 block">
+                        {t.projects.caseStudy.tech}
+                      </span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {project.tech.map((skill: string) => (
+                          <span key={skill} className="px-2 py-0.5 rounded-lg bg-blue-50 text-blue-700 text-[10px] font-medium border border-blue-100">
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="p-3 -m-3 rounded-xl bg-blue-50 border border-blue-200">
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-blue-600 mb-1 block">
+                        {t.projects.caseStudy.impact}
+                      </span>
+                      <p className="text-[12px] text-blue-900 font-semibold leading-relaxed">{project.impact}</p>
+                    </div>
+                  </div>
+                </div>
               </Reveal>
             </div>
             );
@@ -1152,21 +1078,21 @@ const Experience = () => {
 
           <div className="space-y-10 relative border-l-2 border-slate-200 pl-8 ml-2">
             <h3 className="text-base font-bold text-slate-900 mb-6 flex items-center gap-2 -ml-8 pl-8 border-l-2 border-transparent">
-              <Briefcase className="text-indigo-600" size={16} />
+              <Briefcase className="text-blue-600" size={16} />
               {lang === 'en' ? 'Professional Experience' : 'الخبرة المهنية'}
             </h3>
 
             {t.experience.jobs.map((job: any, i: number) => (
               <Reveal key={i} x={-20} y={0} className="relative group">
-                <div className="absolute -left-[37px] top-1.5 w-3.5 h-3.5 rounded-full bg-white border-2 border-indigo-400 timeline-pulse-node" />
+                <div className="absolute -left-[37px] top-1.5 w-3.5 h-3.5 rounded-full bg-white border-2 border-blue-400 timeline-pulse-node" />
                 <div className="space-y-2">
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="px-2 py-0.5 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-700 text-[10px] font-semibold">{job.date}</span>
+                    <span className="px-2 py-0.5 rounded-lg bg-blue-50 border border-blue-200 text-blue-700 text-[10px] font-semibold">{job.date}</span>
                     <span className="text-[10px] text-slate-400 font-medium">{lang === 'en' ? 'Active' : 'نشط'}</span>
                   </div>
                   <div>
-                    <h4 className="text-xl font-black text-slate-900 group-hover:text-indigo-700 transition-colors">{job.role}</h4>
-                    <div className="text-indigo-600 text-sm font-semibold">{job.company}</div>
+                    <h4 className="text-xl font-black text-slate-900 group-hover:text-blue-700 transition-colors">{job.role}</h4>
+                    <div className="text-blue-600 text-sm font-semibold">{job.company}</div>
                   </div>
                   <ul className="space-y-1.5 text-slate-600 text-[13px] leading-relaxed list-disc list-inside pt-1 pl-2">
                     {job.responsibilities.map((resp: string, idx: number) => (
@@ -1184,12 +1110,12 @@ const Experience = () => {
                 <GraduationCap size={120} />
               </div>
               <div className="flex items-center gap-4 mb-5">
-                <div className="w-11 h-11 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center">
+                <div className="w-11 h-11 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center">
                   <GraduationCap size={20} />
                 </div>
                 <div>
                   <h4 className="text-base font-bold text-slate-900">{t.education.title}</h4>
-                  <div className="text-indigo-600 text-xs font-semibold">{t.education.university}</div>
+                  <div className="text-blue-600 text-xs font-semibold">{t.education.university}</div>
                 </div>
               </div>
 
@@ -1200,9 +1126,9 @@ const Experience = () => {
                   <div className="text-xl font-black text-slate-900">{t.education.gpa}</div>
                   <div className="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mt-1">GPA</div>
                 </div>
-                <div className="p-3 rounded-xl bg-indigo-50 border border-indigo-100 text-center">
-                  <div className="text-sm font-black text-indigo-800 leading-tight">{t.education.honors}</div>
-                  <div className="text-[9px] font-semibold text-indigo-400 uppercase tracking-wider mt-1">{lang === 'en' ? 'Awards' : 'جوائز'}</div>
+                <div className="p-3 rounded-xl bg-blue-50 border border-blue-100 text-center">
+                  <div className="text-sm font-black text-blue-800 leading-tight">{t.education.honors}</div>
+                  <div className="text-[9px] font-semibold text-blue-400 uppercase tracking-wider mt-1">{lang === 'en' ? 'Awards' : 'جوائز'}</div>
                 </div>
               </div>
 
@@ -1211,7 +1137,7 @@ const Experience = () => {
 
             <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
               <h4 className="text-sm font-bold text-slate-900 mb-5 flex items-center gap-2">
-                <Globe className="text-indigo-600" size={15} />
+                <Globe className="text-blue-600" size={15} />
                 {t.experience.industries.title}
               </h4>
               <div className="space-y-5">
@@ -1224,7 +1150,7 @@ const Experience = () => {
                           href={item.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-2 py-0.5 rounded-md text-[9px] font-mono font-semibold uppercase tracking-wider border bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100 transition-colors flex items-center gap-1 shrink-0"
+                          className="px-2 py-0.5 rounded-md text-[9px] font-mono font-semibold uppercase tracking-wider border bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 transition-colors flex items-center gap-1 shrink-0"
                         >
                           {lang === 'en' ? 'Visit' : 'زيارة'}
                           <ExternalLink size={10} />
@@ -1256,7 +1182,7 @@ const Volunteer = () => {
           {t.volunteer.items.map((item, i) => (
             <Reveal key={i} delay={i * 0.1}>
               <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-start gap-4">
-                <div className="p-2 rounded-xl bg-rose-50 border border-rose-100 text-rose-600 shrink-0">
+                <div className="p-2 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 shrink-0">
                   <Heart size={18} />
                 </div>
                 <div>
@@ -1295,12 +1221,12 @@ const Certifications = () => {
                 className="glow-card-container p-5 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-start gap-4 card-lift group"
               >
                 <div className="glow-card-border" />
-                <div className="p-2 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-600 group-hover:scale-110 transition-transform shrink-0">
+                <div className="p-2 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 group-hover:scale-110 transition-transform shrink-0">
                   <Award size={16} />
                 </div>
                 <div className="flex-1">
                   <h4 className="text-[13px] font-semibold text-slate-800 leading-relaxed">{cert}</h4>
-                  <div className="mt-2 h-0.5 w-6 bg-indigo-300 group-hover:w-full transition-all duration-500 rounded-full" />
+                  <div className="mt-2 h-0.5 w-6 bg-blue-300 group-hover:w-full transition-all duration-500 rounded-full" />
                 </div>
               </div>
             </Reveal>
@@ -1380,9 +1306,9 @@ const Contact = () => {
                   href={item.link}
                   target="_blank"
                   rel="noreferrer"
-                  className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm hover:border-indigo-300 hover:shadow-md transition-all group"
+                  className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm hover:border-blue-300 hover:shadow-md transition-all group"
                 >
-                  <div className="text-slate-400 group-hover:text-indigo-600 transition-colors mb-2">{item.icon}</div>
+                  <div className="text-slate-400 group-hover:text-blue-600 transition-colors mb-2">{item.icon}</div>
                   <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-0.5">{item.label}</div>
                   <div className="text-xs font-semibold text-slate-700 truncate">{item.info}</div>
                 </a>
@@ -1393,11 +1319,11 @@ const Contact = () => {
           <div className="p-7 rounded-2xl bg-white border border-slate-200 shadow-sm relative overflow-hidden">
             {isSubmitting && (
               <div className="absolute inset-0 bg-white/95 z-20 flex flex-col items-center justify-center p-6 rounded-2xl">
-                <div className="w-12 h-12 rounded-full border-2 border-t-indigo-600 border-slate-200 animate-spin mb-6" />
+                <div className="w-12 h-12 rounded-full border-2 border-t-blue-600 border-slate-200 animate-spin mb-6" />
                 <div className="w-full max-w-xs space-y-2.5">
                   {encLogs.slice(0, encryptStep + 1).map((log, i) => (
                     <div key={i} className="text-[12px] text-slate-700 flex items-center gap-2">
-                      <CheckCircle2 size={13} className="text-emerald-500 shrink-0" />
+                      <CheckCircle2 size={13} className="text-blue-500 shrink-0" />
                       <span>{log}</span>
                     </div>
                   ))}
@@ -1407,14 +1333,14 @@ const Contact = () => {
 
             {submitSuccess && (
               <div className="absolute inset-0 bg-white/95 z-20 flex flex-col items-center justify-center p-6 text-center rounded-2xl">
-                <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center mb-5">
+                <div className="w-14 h-14 rounded-2xl bg-blue-50 border border-blue-200 text-blue-600 flex items-center justify-center mb-5">
                   <CheckCircle2 size={28} />
                 </div>
                 <h4 className="text-lg font-black text-slate-900 mb-2">{lang === 'en' ? 'Message sent!' : 'تم إرسال رسالتك!'}</h4>
                 <p className="text-[13px] text-slate-500 max-w-xs leading-relaxed mb-5">{t.contact.success}</p>
                 <button
                   onClick={() => { setSubmitSuccess(false); setEncryptStep(0); }}
-                  className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm transition-colors cursor-pointer"
+                  className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition-colors cursor-pointer"
                 >
                   {lang === 'en' ? 'Send another' : 'إرسال رسالة أخرى'}
                 </button>
@@ -1428,7 +1354,7 @@ const Contact = () => {
                   <input
                     required type="text" name="name"
                     placeholder={lang === 'en' ? 'Rinas Abdullah' : 'ريناس عبدالله'}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:border-indigo-400 focus:bg-white outline-none text-slate-900 text-sm transition-all placeholder-slate-300"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:border-blue-400 focus:bg-white outline-none text-slate-900 text-sm transition-all placeholder-slate-300"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -1436,7 +1362,7 @@ const Contact = () => {
                   <input
                     required type="email" name="email"
                     placeholder="name@company.com"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:border-indigo-400 focus:bg-white outline-none text-slate-900 text-sm transition-all placeholder-slate-300"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:border-blue-400 focus:bg-white outline-none text-slate-900 text-sm transition-all placeholder-slate-300"
                   />
                 </div>
               </div>
@@ -1445,7 +1371,7 @@ const Contact = () => {
                 <input
                   required type="text" name="subject"
                   placeholder={lang === 'en' ? 'Security audit or development project' : 'تدقيق أمني أو مشروع تطوير'}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:border-indigo-400 focus:bg-white outline-none text-slate-900 text-sm transition-all placeholder-slate-300"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:border-blue-400 focus:bg-white outline-none text-slate-900 text-sm transition-all placeholder-slate-300"
                 />
               </div>
               <div className="space-y-1.5">
@@ -1453,12 +1379,12 @@ const Contact = () => {
                 <textarea
                   required rows={5} name="message"
                   placeholder={lang === 'en' ? 'Tell me about your goals and project needs...' : 'أخبرني عن أهدافك واحتياجات مشروعك...'}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:border-indigo-400 focus:bg-white outline-none text-slate-900 text-sm resize-none transition-all placeholder-slate-300"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:border-blue-400 focus:bg-white outline-none text-slate-900 text-sm resize-none transition-all placeholder-slate-300"
                 />
               </div>
               <button
                 type="submit"
-                className="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors shadow-sm cursor-pointer"
+                className="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors shadow-sm cursor-pointer"
               >
                 <Send size={14} />
                 {t.contact.send}
@@ -1480,7 +1406,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center">
               <span className="text-white font-heading font-black text-base">R</span>
             </div>
             <div>
@@ -1508,7 +1434,7 @@ const Footer = () => {
                 href={link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-xl border border-slate-700 bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-indigo-500 hover:bg-indigo-600/20 transition-all cursor-pointer"
+                className="w-9 h-9 rounded-xl border border-slate-700 bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-blue-500 hover:bg-blue-600/20 transition-all cursor-pointer"
               >
                 <Icon size={15} />
               </a>
@@ -1585,7 +1511,7 @@ export default function App() {
               transition={{ duration: 0.5 }}
               className="flex flex-col items-center gap-8"
             >
-              <div className="w-16 h-16 rounded-2xl bg-indigo-600 flex items-center justify-center shadow-lg">
+              <div className="w-16 h-16 rounded-2xl bg-blue-600 flex items-center justify-center shadow-lg">
                 <span className="text-white font-heading font-black text-2xl">R</span>
               </div>
               <div className="text-center space-y-1">
@@ -1599,7 +1525,7 @@ export default function App() {
               <div className="w-48">
                 <div className="h-0.5 bg-slate-100 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-indigo-600 rounded-full transition-all duration-75"
+                    className="h-full bg-blue-600 rounded-full transition-all duration-75"
                     style={{ width: `${loadProgress}%` }}
                   />
                 </div>
@@ -1619,7 +1545,6 @@ export default function App() {
             <Navbar />
             <main>
               <Hero />
-              <Signature />
               <About />
               <Skills />
               <Projects />
