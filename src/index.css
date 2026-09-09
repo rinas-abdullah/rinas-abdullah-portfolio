@@ -10,31 +10,33 @@
 @layer base {
   html {
     min-height: 100%;
-    background: #ffffff;
+    background: #020409;
     scroll-behavior: smooth;
   }
 
   body {
-    @apply min-h-screen bg-white text-slate-900 antialiased overflow-x-hidden;
-    @apply selection:bg-blue-100 selection:text-blue-900;
+    @apply min-h-screen antialiased overflow-x-hidden;
+    @apply selection:bg-cyan-500/20 selection:text-cyan-100;
+    background: #020409;
+    color: #e2e8f0;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
 
 /* Subtle background dot grid */
 @utility bg-dot-grid {
-  background-image: radial-gradient(rgba(15, 23, 42, 0.055) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
   background-size: 26px 26px;
 }
 
 /* Section divider */
 @utility section-alt {
-  background-color: #f8fafc;
+  background-color: #080d1a;
 }
 
-/* Terminal — dark terminal on light page is intentional and looks pro */
+/* Terminal */
 .terminal-input-prefix {
-  @apply text-blue-400 font-mono font-bold select-none text-[11px];
+  @apply text-cyan-400 font-mono font-bold select-none text-[11px];
 }
 
 @keyframes terminal-cursor-blink {
@@ -46,7 +48,7 @@
   display: inline-block;
   width: 7px;
   height: 13px;
-  background-color: #3b82f6;
+  background-color: #22d3ee;
   animation: terminal-cursor-blink 1s step-end infinite;
   vertical-align: middle;
   margin-left: 3px;
@@ -54,7 +56,7 @@
 
 /* Timeline node */
 .timeline-pulse-node {
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.2);
   animation: node-pulse 3s ease-in-out infinite;
 }
 
@@ -69,10 +71,10 @@
 }
 .card-lift:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
 }
 
-/* Glow card — subtle mouse-tracking radial gradient for light theme */
+/* Glow card — subtle mouse-tracking radial gradient for dark glass theme */
 .glow-card-container {
   position: relative;
   overflow: hidden;
@@ -85,7 +87,7 @@
   inset: 0;
   background: radial-gradient(
     600px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
-    rgba(37, 99, 235, 0.055),
+    rgba(34, 211, 238, 0.09),
     transparent 40%
   );
   z-index: 1;
@@ -105,7 +107,7 @@
   padding: 1px;
   background: radial-gradient(
     350px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
-    rgba(37, 99, 235, 0.35),
+    rgba(34, 211, 238, 0.45),
     transparent 40%
   );
   z-index: 2;
@@ -122,20 +124,20 @@
   opacity: 1;
 }
 
-/* Scrollbar — clean, light */
+/* Scrollbar — dark */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #0a0f1c;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #1e293b;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #334155;
 }
 
 /* Custom cursor */
@@ -154,9 +156,9 @@ body.has-custom-cursor [role="button"] {
   position: fixed;
   top: 0; left: 0;
   width: 20px; height: 20px;
-  border: 1.5px solid rgba(37, 99, 235, 0.5);
+  border: 1.5px solid rgba(34, 211, 238, 0.6);
   border-radius: 50%;
-  background: rgba(37, 99, 235, 0.04);
+  background: rgba(34, 211, 238, 0.06);
   pointer-events: none;
   z-index: 99999;
   transform: translate(-50%, -50%);
@@ -167,7 +169,7 @@ body.has-custom-cursor [role="button"] {
   position: fixed;
   top: 0; left: 0;
   width: 4px; height: 4px;
-  background: #3b82f6;
+  background: #22d3ee;
   border-radius: 50%;
   pointer-events: none;
   z-index: 99999;
@@ -176,16 +178,16 @@ body.has-custom-cursor [role="button"] {
 
 .cursor-hover .custom-cursor {
   width: 38px; height: 38px;
-  border-color: rgba(37, 99, 235, 0.8);
-  background: rgba(37, 99, 235, 0.08);
+  border-color: rgba(34, 211, 238, 0.85);
+  background: rgba(34, 211, 238, 0.1);
 }
 .cursor-hover .custom-cursor-inner {
-  background: #2563eb;
+  background: #67e8f9;
   width: 5px; height: 5px;
 }
 .cursor-active .custom-cursor {
   width: 14px; height: 14px;
-  background: rgba(37, 99, 235, 0.18);
+  background: rgba(34, 211, 238, 0.2);
 }
 
 /* Floating animation for subtle bg blobs */
@@ -214,12 +216,12 @@ body.has-custom-cursor [role="button"] {
   animation: spin-slow 15s linear infinite;
 }
 
-/* Typewriter role cursor — uses same class as terminal-cursor but scoped via text-indigo */
+/* Typewriter role cursor */
 .hero-cursor {
   display: inline-block;
   width: 2px;
   height: 1.1em;
-  background-color: #3b82f6;
+  background-color: #22d3ee;
   animation: terminal-cursor-blink 1s step-end infinite;
   vertical-align: text-bottom;
   margin-left: 2px;
