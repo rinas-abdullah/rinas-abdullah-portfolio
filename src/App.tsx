@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, useContext, useRef, Suspense, lazy } from 'react';
+import { useState, useEffect, createContext, useContext, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Shield,
@@ -34,20 +34,7 @@ import {
   Gem,
 } from 'lucide-react';
 import { translations } from './translations';
-
-const LanyardBadge = lazy(() => import('./components/LanyardBadge'));
-
-const LazyLanyardBadge = () => (
-  <Suspense
-    fallback={
-      <div className="w-full h-[420px] sm:h-[520px] rounded-2xl border border-white/10 bg-white/[0.02] flex items-center justify-center">
-        <span className="text-cyan-400/60 text-xs font-mono">// initializing credential core...</span>
-      </div>
-    }
-  >
-    <LanyardBadge />
-  </Suspense>
-);
+import portraitImg from './assets/portrait.webp';
 
 // --- Context & Hooks ---
 type Language = 'en' | 'ar';
@@ -750,77 +737,125 @@ const SectionHeader = ({ number, title, subtitle }: { number: string; title: str
 const Hero = () => {
   const { t, lang } = useLang();
   const typedTitle = useTypewriter(t.hero.titles, 80, 2500);
+  const nameParts = t.hero.name.split(' ');
+  const nameLine1 = nameParts[0];
+  const nameLine2 = nameParts.slice(1).join(' ') || nameParts[0];
 
   return (
-    <section id="home" className="min-h-screen flex items-center pt-28 pb-16 px-6 relative">
-      <div className="max-w-7xl mx-auto w-full grid gap-12 lg:grid-cols-2 items-center">
+    <section id="home" className="min-h-screen flex flex-col justify-center pt-28 pb-12 px-6 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto w-full">
 
-        {/* Left: Bio */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className="space-y-6 max-w-xl"
+          transition={{ duration: 0.6 }}
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-[11px] font-semibold mb-10"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-[11px] font-semibold">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-500/100 animate-pulse" />
-            {lang === 'en' ? 'Available for opportunities' : 'متاحة للفرص'}
-          </div>
-
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-black text-white leading-[0.95] tracking-tighter">
-            {t.hero.name}
-          </h1>
-
-          <div className="flex items-center gap-1.5 h-8">
-            <span className="text-lg md:text-xl font-mono font-semibold text-cyan-400">
-              {typedTitle}
-            </span>
-            <span className="hero-cursor" />
-          </div>
-
-          <p className="text-[15px] text-slate-400 leading-relaxed">
-            {t.hero.description}
-          </p>
-
-          <div className="flex flex-wrap gap-3 pt-2">
-            <a
-              href="#projects"
-              className="px-5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-white font-semibold text-sm flex items-center gap-2 transition-colors shadow-[0_0_0_1px_rgba(255,255,255,0.03)] cursor-pointer"
-            >
-              {t.hero.cta_projects}
-              <ArrowUpRight size={14} />
-            </a>
-            <a
-              href="#contact"
-              className="px-5 py-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.06] text-slate-200 font-semibold text-sm border border-white/10 transition-colors cursor-pointer"
-            >
-              {t.hero.cta_contact}
-            </a>
-          </div>
-
-          <div className="pt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {[
-              { val: "100%", label: lang === 'en' ? 'Uptime' : 'توفر' },
-              { val: "5.00/4.96", label: lang === 'en' ? 'KAU GPA' : 'GPA جامعة الملك عبدالعزيز' },
-              { val: "AI + Sec", label: lang === 'en' ? 'Specialty' : 'التخصص' },
-              { val: lang === 'en' ? 'Jeddah' : 'جدة', label: lang === 'en' ? 'Location' : 'الموقع' }
-            ].map((stat, i) => (
-              <div key={i} className="p-3 rounded-xl bg-white/[0.04] border border-white/10 shadow-[0_0_0_1px_rgba(255,255,255,0.03)]">
-                <div className="text-sm font-black text-white">{stat.val}</div>
-                <div className="text-[10px] text-slate-400 mt-0.5 font-medium">{stat.label}</div>
-              </div>
-            ))}
-          </div>
+          <span className="w-1.5 h-1.5 rounded-full bg-cyan-500/100 animate-pulse" />
+          {lang === 'en' ? 'Available for opportunities' : 'متاحة للفرص'}
         </motion.div>
 
-        {/* Right: 3D Holographic Badge */}
+        <div className="grid gap-10 lg:grid-cols-3 items-center">
+
+          {/* Bio + CTA + stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            className="order-2 lg:order-1 space-y-6"
+          >
+            <div className="flex items-center gap-1.5 h-8">
+              <span className="text-lg md:text-xl font-mono font-semibold text-cyan-400">
+                {typedTitle}
+              </span>
+              <span className="hero-cursor" />
+            </div>
+
+            <p className="text-[15px] text-slate-400 leading-relaxed max-w-sm">
+              {t.hero.description}
+            </p>
+
+            <div className="flex flex-wrap gap-3">
+              <a
+                href="#projects"
+                className="px-5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-white font-semibold text-sm flex items-center gap-2 transition-colors shadow-[0_0_0_1px_rgba(255,255,255,0.03)] cursor-pointer"
+              >
+                {t.hero.cta_projects}
+                <ArrowUpRight size={14} />
+              </a>
+              <a
+                href="#contact"
+                className="px-5 py-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.06] text-slate-200 font-semibold text-sm border border-white/10 transition-colors cursor-pointer"
+              >
+                {t.hero.cta_contact}
+              </a>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 max-w-sm">
+              {[
+                { val: "100%", label: lang === 'en' ? 'Uptime' : 'توفر' },
+                { val: "5.00/4.96", label: lang === 'en' ? 'KAU GPA' : 'GPA' },
+              ].map((stat, i) => (
+                <div key={i} className="p-3 rounded-xl bg-white/[0.04] border border-white/10 shadow-[0_0_0_1px_rgba(255,255,255,0.03)]">
+                  <div className="text-sm font-black text-white">{stat.val}</div>
+                  <div className="text-[10px] text-slate-400 mt-0.5 font-medium">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Portrait with glow */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.25 }}
+            className="order-1 lg:order-2 relative flex justify-center items-center"
+          >
+            <div
+              className="absolute h-[260px] w-[260px] sm:h-[340px] sm:w-[340px] lg:h-[400px] lg:w-[400px] rounded-full"
+              style={{ background: 'radial-gradient(circle at 35% 30%, rgba(34,211,238,0.55), rgba(139,92,246,0.35) 55%, transparent 75%)' }}
+            />
+            <img
+              src={portraitImg}
+              alt={t.hero.name}
+              className="relative z-10 w-[220px] sm:w-[280px] lg:w-[320px] h-auto object-contain drop-shadow-[0_20px_60px_rgba(0,0,0,0.55)]"
+            />
+          </motion.div>
+
+          {/* Giant name */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="order-3 text-center lg:text-left"
+          >
+            <h1 className="font-heading font-black text-white leading-[0.9] tracking-tighter text-5xl sm:text-6xl lg:text-7xl">
+              {nameLine1}
+              <br />
+              {nameLine2}
+            </h1>
+          </motion.div>
+        </div>
+
+        {/* Socials + location */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.7 }}
-          className="w-full"
+          transition={{ duration: 0.5, delay: 0.55 }}
+          className="mt-16 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-4 items-center justify-between"
         >
-          <LazyLanyardBadge />
+          <div className="flex items-center gap-5">
+            <a href="https://www.linkedin.com/in/rinas-abdullah" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-cyan-400 transition-colors">
+              <Linkedin size={18} />
+            </a>
+            <a href="https://github.com/rinas-abdullah" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-cyan-400 transition-colors">
+              <Github size={18} />
+            </a>
+            <a href={`mailto:${CONTACT_EMAIL}`} className="text-slate-400 hover:text-cyan-400 transition-colors">
+              <Mail size={18} />
+            </a>
+          </div>
+          <div className="text-sm font-medium text-slate-400">{t.hero.location}</div>
         </motion.div>
 
       </div>
